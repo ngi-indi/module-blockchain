@@ -1,1 +1,117 @@
-# module-blockchain
+# module-blockchain (experimental)
+
+## List
+
+- [TokenDistribution V1](TokenDistributionV1)
+
+## Get started
+
+Install Node.js LTS:
+
+```bash
+sudo apt update
+sudo apt install curl git
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt-get install -y nodejs
+```
+
+Create the project folder:
+
+```bash
+mkdir hardhat-project
+cd hardhat-project
+```
+
+Initialize a Node.js project:
+
+```bash
+npm init
+```
+
+Compile all the metadata forms related to the Hardhat project. \
+Download the Hardhat modules:
+
+```bash
+npm install --save-dev hardhat
+```
+
+Create a Hardhat project
+
+```bash
+npx hardhat init
+```
+
+Create an empty project since the JavaScript and the TypeScript ones come with already existing contracts.
+
+Download the toolbox module:
+
+```bash
+npm i @nomicfoundation/hardhat-toolbox
+```
+
+Create the essential project folders:
+
+```bash
+mkdir contracts scripts test
+```
+
+The [```contracts```](contracts) folder will contain the Solidity contracts.\
+The [```scripts```](scripts) folder will contain the deployment scripts.\
+The [```test```](test) folder will contain the test scripts.
+
+Download the OpenZeppelin template contracts:
+
+```bash
+npm i @openzeppelin/contracts
+```
+
+Modify the compiler version in the [```hardhat.config.js```](hardhat.config.js) file.
+
+
+> [Configure TypeScript](https://hardhat.org/hardhat-runner/docs/guides/typescript) if needed.
+
+## Compile the contracts
+
+```bash
+npx hardhat compile
+```
+
+This action generates the [```artifacts```](artifacts) folder.
+
+## Clear cache and compiled contracts files
+
+```bash
+npx hardhat clean
+```
+
+## Testing the contracts
+
+The libraries used for testing the Solidity code are [```Mocha```](https://mochajs.org/) and [```Chai```](https://www.chaijs.com/). To install them run:
+
+
+```bash
+npm install --save-dev mocha chai
+```
+
+<!-- 
+In case of "Error HH19"
+(Error HH19: Your project is an ESM project (you have "type": "module" set in your package.json) but your Hardhat config file uses the .js extension)
+
+https://ethereum.stackexchange.com/a/158991
+-->
+
+To run the tests, execute:
+
+```bash
+npx hardhat test
+```
+
+<!--
+Run tests on a specific network
+
+```bash
+npx hardhat test --network bnbTestnet
+```
+
+Some testing features such as before(), beforeAll(), etc. do not work outside the Hardhat testnet...
+-->
