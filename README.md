@@ -142,3 +142,14 @@ const config: HardhatUserConfig  = {
 	}
 };
 ```
+
+## Interact with a deployed contract
+
+```ts
+const contractName = "MyContract";
+const contractAddress = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2";
+
+const myContract = await (await ethers.getContractFactory(contractName)).attach(contractAddress);
+
+await myContract.myAction();
+```
