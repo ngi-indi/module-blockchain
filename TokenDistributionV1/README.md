@@ -67,3 +67,12 @@ Compiled 20 Solidity files successfully (evm target: paris).
 
   21 passing (533ms)
   ```
+
+## Deployment
+
+```bash
+npx hardhat run --network bnbTestnet scripts/deploy.ts
+```
+
+Ontology token contract address: [0x7f69E62A5C9C39608e037212e43745A381507C51](https://bscscan.com/address/0x7f69E62A5C9C39608e037212e43745A381507C51) \
+Token distribution contract address: [0x5D2D968eEa19DC5FC23e6268055af62c65219eF6](https://bscscan.com/address/0x5D2D968eEa19DC5FC23e6268055af62c65219eF6)
