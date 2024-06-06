@@ -1,0 +1,8 @@
+format: 'text'
+importPath: node_modules
+checkAssert: true
+# testMode: 'property' # default behaviour
+
+cryticArgs:
+  - "--solc-remaps"
+  - "@openzeppelin/contracts=node_modules/@openzeppelin/contracts/"

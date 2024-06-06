@@ -6,6 +6,8 @@
 
 ## Get started
 
+### Install Hardhat
+
 Install Node.js LTS:
 
 ```bash
@@ -70,6 +72,45 @@ Modify the compiler version in the [```hardhat.config.js```](hardhat.config.js) 
 
 > [Configure TypeScript](https://hardhat.org/hardhat-runner/docs/guides/typescript) if needed.
 
+### Install Echidna
+
+Download the latest version from Echidna's [GitHub releases page](https://github.com/crytic/echidna/releases). 
+
+Here, the version is ```2.2.3```:
+
+```bash
+cd ~
+wget https://github.com/crytic/echidna/releases/download/v2.2.3/echidna-2.2.3-x86_64-linux.tar.gz
+```
+
+Extract the archive:
+
+```bash
+tar -xvf echidna-2.2.3-x86_64-linux.tar.gz
+rm echidna-2.2.3-x86_64-linux.tar.gz
+```
+
+Move it to the programs folder:
+
+```bash
+sudo mv echidna /usr/local/bin/
+```
+
+Install the ```crytic-compile``` and ```slither-analyzer``` libraries:
+
+```bash
+pip install crytic-compile
+pip3 install slither-analyzer --user
+```
+
+Install a Solidity compiler specific version:
+
+```bash
+solc-select install 0.8.25
+```
+
+In this example, the compiler version is ```0.8.25```.
+
 ## Compile the contracts
 
 ```bash
@@ -84,7 +125,7 @@ This action generates the [```artifacts```](artifacts) folder.
 npx hardhat clean
 ```
 
-## Testing the contracts
+## Unit and integration testing (Hardhat)
 
 The libraries used for testing the Solidity code are [```Mocha```](https://mochajs.org/) and [```Chai```](https://www.chaijs.com/). To install them run:
 
@@ -116,15 +157,39 @@ npx hardhat test --network bnbTestnet
 Some testing features such as before(), beforeAll(), etc. do not work outside the Hardhat testnet...
 -->
 
+## Fuzz testing (Echidna) <!-- Property-based testing -->
+
+To hook a Solidity contract with Echidna, one creates a Solidity file representing the Echidna test contract and imports the original contract. \
+The test contract inherits from the original contract having access to its state and functions:
+
+```solidity
+import "../contracts/<MyContract>.sol"
+
+contract <MyContract>Test is <MyContract> {
+	...
+}
+```
+
+To execute, run:
+
+<!-- Ensure the config file exists and it is set correctly -->
+```bash
+npx hardhat compile
+
+solc-select use 0.8.25
+echidna --contract <MyContract>Test echidna/<MyContract>Test.sol --config echidna/echidna.config.yaml 
+``` 
+<!-- TODO: npm script --> 
+
 ## Deploy the contract
 
 ```bash
- npx hardhat run --network networkName scripts/deploy.ts
+npx hardhat run --network <networkName> scripts/deploy.ts
 ```
 
-```networkName``` must be defined in the ```hardhat.config.ts``` file.
+```<networkName>``` must be defined in the ```hardhat.config.ts``` file.
 
-Example where ```networkName``` is ```bnbTestnet```:
+Example where ```<networkName>``` is ```bnbTestnet```:
 
 ```
 const config: HardhatUserConfig  = {
