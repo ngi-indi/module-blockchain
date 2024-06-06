@@ -147,6 +147,12 @@ To run the tests, execute:
 npx hardhat test
 ```
 
+Or, alternatively: 
+
+```bash
+npm run test:hardhat
+```
+
 <!--
 Run tests on a specific network
 
@@ -172,14 +178,11 @@ contract <MyContract>Test is <MyContract> {
 
 To execute, run:
 
-<!-- Ensure the config file exists and it is set correctly -->
+<!-- Ensure the npm script is defined in the package.json file and the Echidna config file exists and it is correctly set. -->
 ```bash
-npx hardhat compile
-
 solc-select use 0.8.25
-echidna --contract <MyContract>Test echidna/<MyContract>Test.sol --config echidna/echidna.config.yaml 
+npm run test:echidna
 ``` 
-<!-- TODO: npm script --> 
 
 ## Deploy the contract
 

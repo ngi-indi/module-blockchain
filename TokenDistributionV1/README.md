@@ -22,6 +22,8 @@ After the creation, the contract allows these actions:
 
 ## Testing
 
+### Hardhat
+
 ```bash
 npx hardhat clean
 npx hardhat test
@@ -67,6 +69,13 @@ Compiled 20 Solidity files successfully (evm target: paris).
 
   21 passing (533ms)
   ```
+
+### Echidna
+
+```bash
+solc-select use 0.8.25
+npm run test:echidna
+```
 
 ## Deployment
 
