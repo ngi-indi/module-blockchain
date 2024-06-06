@@ -73,7 +73,6 @@ Compiled 20 Solidity files successfully (evm target: paris).
 ### Echidna
 
 ```bash
-solc-select use 0.8.25
 npm run test:echidna
 ```
 

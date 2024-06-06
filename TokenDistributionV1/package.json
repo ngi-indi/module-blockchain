@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test:hardhat": "npx hardhat test",
-    "test:echidna": "echidna --contract TokenDistributionTest echidna/TokenDistributionTest.sol --config echidna/echidna.config.yaml"
+    "test:echidna": "solc-select use 0.8.25 && echidna --contract TokenDistributionTest echidna/TokenDistributionTest.sol --config echidna/echidna.config.yaml"
   },
   "repository": {
     "type": "git",

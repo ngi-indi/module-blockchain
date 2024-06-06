@@ -178,9 +178,12 @@ contract <MyContract>Test is <MyContract> {
 
 To execute, run:
 
-<!-- Ensure the npm script is defined in the package.json file and the Echidna config file exists and it is correctly set. -->
+<!-- Ensure:
+- the npm script is defined in the package.json file 
+- the Echidna config file exists and it is correctly set.
+- the Solidity compiler versions are correct (package.json, echidna.config.yaml, hardhat.config.ts, Solidity code, etc.)
+-->
 ```bash
-solc-select use 0.8.25
 npm run test:echidna
 ``` 
 
