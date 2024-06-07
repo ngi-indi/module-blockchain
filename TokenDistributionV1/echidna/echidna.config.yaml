@@ -1,6 +1,5 @@
 format: 'text'
-testMode: 'assertion'
-checkAssert: true
+testMode: assertion
 allContracts: true
 importPath: node_modules # echidna has to be called in the project's root, where the node_module folder is
 deployer: "0x10000"

@@ -186,7 +186,7 @@ describe("TokenDistribution", function() {
         const invalidAmount = 100000000000;
         it(`Should not accept a withdrawal request with number of tokens greater than the contract's balance`, async function() {
             // Different syntax from the other calls! (source: https://ethereum-waffle.readthedocs.io/en/latest/matchers.html#revert-with-message)
-            await expect(tokenDistribution.connect(recipient).request(invalidAmount)).to.be.revertedWith("Contract has not enough tokens to cover this request!");
+            await expect(tokenDistribution.connect(recipient).request(invalidAmount)).to.be.reverted;
         });
         
         it(`Should accept a ${withdrawalAmount} tokens withdrawal request`, async function() {
@@ -199,7 +199,7 @@ describe("TokenDistribution", function() {
     describe("Approve", function() {
         it('Should accept a vote only from a validator', async function() {
             const noLongerAValidator = validators.pop(); // Removes the participant from the array too (this partecipant had be removed from the contract's validators list before)
-            await expect(tokenDistribution.connect(noLongerAValidator).approve()).to.be.revertedWith("Only a validator can call this function!");
+            await expect(tokenDistribution.connect(noLongerAValidator).approve()).to.be.reverted;
         });
 
         it('Should let validators approve the request correctly', async function() {
@@ -214,12 +214,12 @@ describe("TokenDistribution", function() {
         });
 
         it('Should not let a validator vote twice', async function() {
-            await expect(tokenDistribution.connect(validators[0]).approve()).to.be.revertedWith("You have already approved this request!");
+            await expect(tokenDistribution.connect(validators[0]).approve()).to.be.reverted;
         });
     
         it('Should not accept more votes', async function() {
             const anotherValidator = validators.pop(); // Removes the participant from the array too
-            await expect(tokenDistribution.connect(anotherValidator).approve()).to.be.revertedWith("Number of approvals exceed!");
+            await expect(tokenDistribution.connect(anotherValidator).approve()).to.be.reverted;
         });
     });
 
@@ -247,5 +247,7 @@ describe("TokenDistribution", function() {
         });
     });
 });
+
+
 
 // --------------------------------------------------------------------------

@@ -122,7 +122,7 @@ contract TokenDistribution
 
     function withdraw() public onlyRecipient
     {
-        require(currentRequest.approvalValidators.length == validatorsThreshold);
+        require(getNumberOfValidatorsInCurrentRequest() == validatorsThreshold);
         require(token.transfer(recipient, currentRequest.amount));
         
         // The current request is no longer valid, so we set the default uint value for the amount and block number

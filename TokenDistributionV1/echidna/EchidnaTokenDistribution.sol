@@ -15,8 +15,8 @@ contract EchidnaTokenDistribution
     address constant ECHIDNA_ADDRESS_2 = address(0x20000);
     address constant ECHIDNA_ADDRESS_3 = address(0x30000);
 
-    address echidna_caller = msg.sender;     // transaction caller (expected to be 0x10000 from the echidna.config.yaml file)
-    address echidna_address = address(this); // contract
+    address echidna_caller = msg.sender;  // transaction caller (expected to be 0x10000 from the echidna.config.yaml file)
+    address echidna = address(this);      // contract
 
     // -----------------------------------------------------------
 
@@ -24,20 +24,15 @@ contract EchidnaTokenDistribution
     // -----------------------------------------------------------
     // Token Distribution state
     // -----------------------------------------------------------
-
+    
+    OntologyToken ontologyToken = new OntologyToken();
+    
     address payable constant RECIPIENT = payable(ECHIDNA_ADDRESS_2);
     uint constant VALIDATORS_THRESHOLD = 3;
     uint constant TIMEOUT = 200;
-    uint constant MINT_AMOUNT = 500000;
+    uint constant MINT_AMOUNT = 500_000;
 
-    OntologyToken ontologyToken = new OntologyToken();
-
-    TokenDistribution tokenDistribution = new TokenDistribution(
-        IERC20(ontologyToken),
-        RECIPIENT,
-        VALIDATORS_THRESHOLD,
-        MINT_AMOUNT
-    );
+    TokenDistribution tokenDistribution;
 
     // -----------------------------------------------------------
 
@@ -46,9 +41,18 @@ contract EchidnaTokenDistribution
     // Echidna constructor
     // -----------------------------------------------------------
 
-    constructor() 
-    {
+    constructor() {
+        tokenDistribution = new TokenDistribution(
+        ontologyToken,
+        RECIPIENT,
+        VALIDATORS_THRESHOLD,
+        MINT_AMOUNT
+    );
+        // ERC20 actions
         ontologyToken.mint(MINT_AMOUNT);
+
+        ontologyToken.approve(echidna_caller, MINT_AMOUNT);
+        ontologyToken.approve(echidna, MINT_AMOUNT);
     }
     
     // -----------------------------------------------------------
@@ -58,7 +62,8 @@ contract EchidnaTokenDistribution
     // Debug events
     // -----------------------------------------------------------
 
-    event DebugAddress(string name, address addr);
+    event Debug(string name, address value);
+    event Debug(string name, uint value);
 
     // -----------------------------------------------------------
 
@@ -68,7 +73,7 @@ contract EchidnaTokenDistribution
     // -----------------------------------------------------------
 
     // Echidna's hello world:
-    function echidna_always_true() pure public returns (bool) {
+    function echidna_always_true() public returns (bool) {
         return true;
     } 
 
@@ -78,14 +83,19 @@ contract EchidnaTokenDistribution
     // -----------------------------------------------------------
     // Assertions
     // -----------------------------------------------------------
+    
+    function testEchidnaAddress() public {
+        emit Debug("Echidna caller: ", echidna_caller);
+        emit Debug("Echidna address: ", echidna);
+        emit Debug("TokenDistribution owner: ", tokenDistribution.owner());
+        emit Debug("OntologyToken owner: ", ontologyToken.owner());
 
-    function testEchidnaAddress() view public {
         assert(echidna_caller == ECHIDNA_ADDRESS_1);
-
-        // This Echidna contract should own the OntologyToken and TokenDistribution contracts
-        assert(ontologyToken.owner() == echidna_address);
-        assert(tokenDistribution.owner() == echidna_address);
+        assert(tokenDistribution.owner() == echidna);
+        assert(ontologyToken.owner() == echidna);
     }
+
+    // TODO: Add new properties (time checks, etc.)
 
     // -----------------------------------------------------------
 }
