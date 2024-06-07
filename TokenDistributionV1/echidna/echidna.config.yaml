@@ -1,7 +1,16 @@
 format: 'text'
-importPath: node_modules
+testMode: 'assertion'
 checkAssert: true
-# testMode: 'property' # default behaviour
+allContracts: true
+importPath: node_modules # echidna has to be called in the project's root, where the node_module folder is
+deployer: "0x10000"
+sender: 
+  - "0x10000" # echidna_caller
+  - "0x20000" # recipient
+  - "0x30000" # val_0
+  - "0x40000" # val_1
+  - "0x50000" # val_2
+  - "0x60000" # val_3
 
 cryticArgs:
   - "--solc-remaps"

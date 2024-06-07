@@ -165,24 +165,13 @@ Some testing features such as before(), beforeAll(), etc. do not work outside th
 
 ## Fuzz testing (Echidna) <!-- Property-based testing -->
 
-To hook a Solidity contract with Echidna, one creates a Solidity file representing the Echidna test contract and imports the original contract. \
-The test contract inherits from the original contract having access to its state and functions:
-
-```solidity
-import "../contracts/<MyContract>.sol"
-
-contract <MyContract>Test is <MyContract> {
-	...
-}
-```
+Before running the tests, make sure:
+- The Echidna npm script is defined in the ```package.json``` file.
+- The Echidna ```echidna.config.yaml``` configuration file exists and is correctly set.
+- The Solidity compiler versions are coherent and correct (in ```package.json```, ```echidna.config.yaml```, ```hardhat,config.ts```, the Solidity code, etc.)
 
 To execute, run:
 
-<!-- Ensure:
-- the npm script is defined in the package.json file 
-- the Echidna config file exists and it is correctly set.
-- the Solidity compiler versions are correct (package.json, echidna.config.yaml, hardhat.config.ts, Solidity code, etc.)
--->
 ```bash
 npm run test:echidna
 ``` 
