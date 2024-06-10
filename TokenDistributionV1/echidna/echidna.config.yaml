@@ -2,10 +2,11 @@ importPath: node_modules # echidna has to be called in the project's root, where
 
 # format: 'text'
 testMode: assertion
-allContracts: true
+allContracts: false # TODO: if true, filter some useless functions from ERC20
+stopOnFail: true
 
-testLimit: 500000
-workers: 4
+testLimit: 2500000
+workers: 8
 
 deployer: "0x10000"
 sender: 

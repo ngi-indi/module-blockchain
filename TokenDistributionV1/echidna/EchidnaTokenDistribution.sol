@@ -17,7 +17,6 @@ contract EchidnaTokenDistribution is TokenDistribution
     address constant ECHIDNA_ADDRESS_4 = address(0x40000);
     address constant ECHIDNA_ADDRESS_5 = address(0x50000);
 
-
     address echidna_caller = msg.sender;  // transaction caller (expected to be 0x10000 from the echidna.config.yaml file)
     address echidna = address(this);      // contract
 
@@ -69,22 +68,10 @@ contract EchidnaTokenDistribution is TokenDistribution
 
 
     // -----------------------------------------------------------
-    // Properties
-    // -----------------------------------------------------------
-
-    // Echidna's hello world:
-    function echidna_always_true() public returns (bool) {
-        return true;
-    } 
-
-    // -----------------------------------------------------------
-
-
-    // -----------------------------------------------------------
     // Assertions
     // -----------------------------------------------------------
     
-    function testEchidnaAddress() public {
+    function echidnaAddresses() public {
         emit Debug("Echidna caller: ", echidna_caller);
         emit Debug("Echidna address: ", echidna);
         emit Debug("TokenDistribution owner: ", this.owner());
@@ -95,12 +82,35 @@ contract EchidnaTokenDistribution is TokenDistribution
         assert(ontologyToken.owner() == echidna);
     }
 
-    // TODO: Add new properties (time checks, etc.)
 
-    // This should fail by calling a ERC20 transfer
-    function testOwnerBalance() public {
-        emit Debug("Echidna balance: ", ontologyToken.balanceOf(echidna));
-        assert(ontologyToken.balanceOf(echidna) == MINT_AMOUNT);
+    function echidnaValidatorsThreshold() public {
+        assert(this.getNumberOfValidatorsInCurrentRequest() <= VALIDATORS_THRESHOLD);
+    }
+
+
+    function echidnaRequestAmount(uint _amount) public {
+        // Perform a request
+        request(_amount);
+
+        // A request should always be less than or equal to the contract's tokens balance.
+        assert(currentRequest.amount <= ontologyToken.balanceOf(address(this)));
+    }
+
+
+    function echidnaRequestTimeout(uint _amount) public {
+        // Request block number before a newer request
+        uint lastRequestTime = this.getBlockNumberInCurrentRequest();
+
+        // If we've not passed the timeout yet
+        if(block.number <= lastRequestTime + TIMEOUT) {
+            // Perform a new request
+            request(_amount);
+
+            // The request block number should not change (i.e. the request() has failed)
+            assert(this.getBlockNumberInCurrentRequest() == lastRequestTime);
+        }
+
+        assert(true);
     }
 
     // -----------------------------------------------------------
