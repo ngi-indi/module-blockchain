@@ -171,7 +171,7 @@ describe("TokenDistribution", function() {
             expect(await ontologyToken.balanceOf(owner.address)).to.equal(depositAmount);
 
             // Before transfering ERC20 tokens, owner must call the ERC20 approve 
-            ontologyToken.approve(tokenDistribution.target, depositAmount);
+            await ontologyToken.approve(tokenDistribution.target, depositAmount);
         });
 
         it(`Should deposit ${depositAmount} tokens`, async function() {
@@ -193,6 +193,10 @@ describe("TokenDistribution", function() {
             await tokenDistribution.connect(recipient).request(withdrawalAmount);
             expect((await tokenDistribution.currentRequest())[REQUEST_AMOUNT]).to.equal(withdrawalAmount);
             expect((await tokenDistribution.currentRequest())[REQUEST_BLOCKNUMBER]).to.equal((await ethers.provider.getBlock("latest")).number);
+        });
+
+        it(`Should not accept a new request when there is one already active`, async function() {
+            await expect(tokenDistribution.connect(recipient).request(withdrawalAmount)).to.be.reverted;
         });
     });
 

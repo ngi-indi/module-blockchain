@@ -90,11 +90,11 @@ contract TokenDistribution
 
         // Timeout excess or default value (currentRequest not initialized) i.e. 0.
         // In the very unfortunate case, a withdrawal request cannot be performed in the genesis block of a EVM chain because contract has to be created before that!
-        if(currentRequest.blockNumber + timeout > block.number || currentRequest.blockNumber == 0)
+        if(block.number > currentRequest.blockNumber + timeout || currentRequest.blockNumber == 0)
         {
             // Creates an empty request at the current block with the specified amount.
             currentRequest = Request(_amount, block.number, new address[](validatorsThreshold));
-
+            
             emit NewWithdrawalRequest(currentRequest);
         } 
         else 
@@ -160,6 +160,10 @@ contract TokenDistribution
 
     function getApprovalValidatorsInCurrentRequest() public view returns (address[] memory) { 
         return currentRequest.approvalValidators; 
+    }
+
+    function getBlockNumberInCurrentRequest() public view returns (uint) { 
+        return currentRequest.blockNumber; 
     }
 
     // ---------------------------------------------------------
