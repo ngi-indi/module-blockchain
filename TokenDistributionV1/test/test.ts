@@ -6,6 +6,7 @@
 // --------------------------------------------------------------------------
 
 import {
+    mine,
     time,
     loadFixture,
 } from "@nomicfoundation/hardhat-toolbox/network-helpers";
@@ -82,8 +83,8 @@ describe("TokenDistribution", function() {
         ({owner, recipient, validators} = await loadFixture(getParticipantsFixture));
     });
     
-    const timeout = 200; // blocks
-    const validatorsThreshold = 3;
+    const TIMEOUT = 200; // blocks
+    const VALIDATORS_THRESHOLD = 3;
 
     async function deployTokenDistributionFixture() {        
         // Deploy the ERC20 OntologyToken contract first
@@ -96,7 +97,7 @@ describe("TokenDistribution", function() {
 
         // Deploy the TokenDistribution contract
         const tokenDistributionFactory = await hre.ethers.getContractFactory("TokenDistribution");
-        const tokenDistribution = await tokenDistributionFactory.deploy(ontologyTokenAddress, recipientAddress, validatorsThreshold, timeout);
+        const tokenDistribution = await tokenDistributionFactory.deploy(ontologyTokenAddress, recipientAddress, VALIDATORS_THRESHOLD, TIMEOUT);
         
         return {tokenDistribution, ontologyToken};
     }
@@ -121,12 +122,12 @@ describe("TokenDistribution", function() {
             expect(await tokenDistribution.token()).to.equal(ontologyToken.target);
         });
 
-        it(`Should set ${timeout} blocks as timeout`, async function() {
-            expect(await tokenDistribution.timeout()).to.equal(timeout);
+        it(`Should set ${TIMEOUT} blocks as timeout`, async function() {
+            expect(await tokenDistribution.timeout()).to.equal(TIMEOUT);
         });
 
-        it(`Should set ${validatorsThreshold} as validators threshold`, async function() {
-            expect(await tokenDistribution.validatorsThreshold()).to.equal(validatorsThreshold);
+        it(`Should set ${VALIDATORS_THRESHOLD} as validators threshold`, async function() {
+            expect(await tokenDistribution.validatorsThreshold()).to.equal(VALIDATORS_THRESHOLD);
         });
 
         it("Should contain an empty request", async function() {
@@ -134,7 +135,7 @@ describe("TokenDistribution", function() {
             expect((await tokenDistribution.currentRequest())[REQUEST_BLOCKNUMBER]).to.equal(0n);
 
             // The approval validators array should contain only empty addresses
-            for (let i=0; i<validatorsThreshold; i++) {
+            for (let i=0; i<VALIDATORS_THRESHOLD; i++) {
                 expect((await tokenDistribution.getApprovalValidatorsInCurrentRequest())[i]).to.equal(ADDR_ZERO);
             }
         });
@@ -162,25 +163,25 @@ describe("TokenDistribution", function() {
         });
     });
 
-    const depositAmount = 10000;
+    const DEPOSIT_AMOUNT = 10000;
     
     describe("Deposit", function() {
         before(async function() {
             // Owner mints a quantity of tokens (tested before)
-            await ontologyToken.mint(depositAmount);
-            expect(await ontologyToken.balanceOf(owner.address)).to.equal(depositAmount);
+            await ontologyToken.mint(DEPOSIT_AMOUNT);
+            expect(await ontologyToken.balanceOf(owner.address)).to.equal(DEPOSIT_AMOUNT);
 
             // Before transfering ERC20 tokens, owner must call the ERC20 approve 
-            await ontologyToken.approve(tokenDistribution.target, depositAmount);
+            await ontologyToken.approve(tokenDistribution.target, DEPOSIT_AMOUNT);
         });
 
-        it(`Should deposit ${depositAmount} tokens`, async function() {
-            await tokenDistribution.deposit(depositAmount);
-            expect(await ontologyToken.balanceOf(tokenDistribution.target)).to.equal(depositAmount);
+        it(`Should deposit ${DEPOSIT_AMOUNT} tokens`, async function() {
+            await tokenDistribution.deposit(DEPOSIT_AMOUNT);
+            expect(await ontologyToken.balanceOf(tokenDistribution.target)).to.equal(DEPOSIT_AMOUNT);
         });
     });
 
-    const withdrawalAmount = 8000;
+    const WITHDRAWAL_AMOUNT = 8000;
 
     describe("Request", function() {
         const invalidAmount = 100000000000;
@@ -189,25 +190,25 @@ describe("TokenDistribution", function() {
             await expect(tokenDistribution.connect(recipient).request(invalidAmount)).to.be.reverted;
         });
         
-        it(`Should accept a ${withdrawalAmount} tokens withdrawal request`, async function() {
-            await tokenDistribution.connect(recipient).request(withdrawalAmount);
-            expect((await tokenDistribution.currentRequest())[REQUEST_AMOUNT]).to.equal(withdrawalAmount);
+        it(`Should accept a ${WITHDRAWAL_AMOUNT} tokens withdrawal request`, async function() {
+            await tokenDistribution.connect(recipient).request(WITHDRAWAL_AMOUNT);
+            expect((await tokenDistribution.currentRequest())[REQUEST_AMOUNT]).to.equal(WITHDRAWAL_AMOUNT);
             expect((await tokenDistribution.currentRequest())[REQUEST_BLOCKNUMBER]).to.equal((await ethers.provider.getBlock("latest")).number);
         });
 
         it(`Should not accept a new request when there is one already active`, async function() {
-            await expect(tokenDistribution.connect(recipient).request(withdrawalAmount)).to.be.reverted;
+            await expect(tokenDistribution.connect(recipient).request(WITHDRAWAL_AMOUNT)).to.be.reverted;
         });
     });
 
     describe("Approve", function() {
-        it('Should accept a vote only from a validator', async function() {
+        it('Should not accept a vote from an address not in the validators map', async function() {
             const noLongerAValidator = validators.pop(); // Removes the participant from the array too (this partecipant had be removed from the contract's validators list before)
             await expect(tokenDistribution.connect(noLongerAValidator).approve()).to.be.reverted;
         });
 
         it('Should let validators approve the request correctly', async function() {
-            for(let i=0; i<validatorsThreshold; i++) {
+            for(let i=0; i<VALIDATORS_THRESHOLD; i++) {
                 await tokenDistribution.connect(validators[i]).approve();
                 // The number of validators in the current request should have increased by 1
                 expect(await tokenDistribution.getNumberOfValidatorsInCurrentRequest()).to.equal(i+1);
@@ -233,11 +234,11 @@ describe("TokenDistribution", function() {
         });
 
         it('Should transfer the correct amount to the recipient', async function() {
-            expect(await ontologyToken.balanceOf(recipient.address)).to.equal(withdrawalAmount);
+            expect(await ontologyToken.balanceOf(recipient.address)).to.equal(WITHDRAWAL_AMOUNT);
         });
 
-        it(`Should have ${depositAmount - withdrawalAmount} tokens left in its balance`, async function() {
-            expect(await ontologyToken.balanceOf(tokenDistribution.target)).to.equal(depositAmount - withdrawalAmount);
+        it(`Should have ${DEPOSIT_AMOUNT - WITHDRAWAL_AMOUNT} tokens left in its balance`, async function() {
+            expect(await ontologyToken.balanceOf(tokenDistribution.target)).to.equal(DEPOSIT_AMOUNT - WITHDRAWAL_AMOUNT);
         });
 
         it(`Should reset the request's status`, async function() {
@@ -245,9 +246,28 @@ describe("TokenDistribution", function() {
             expect((await tokenDistribution.currentRequest())[REQUEST_BLOCKNUMBER]).to.equal(0);
             
             // The approval validators array should contain only empty addresses
-            for (let i=0; i<validatorsThreshold; i++) {
+            for (let i=0; i<VALIDATORS_THRESHOLD; i++) {
                 expect((await tokenDistribution.getApprovalValidatorsInCurrentRequest())[i]).to.equal(ADDR_ZERO);
             }
+        });
+    });
+
+    describe("Timeout", function() {
+        it('Should not let create a new request until the timeout has expired', async function () {
+
+            // Perform a withdrawal request (with half of the contract's balance)
+            await tokenDistribution.connect(recipient).request(1)
+            expect((await tokenDistribution.currentRequest())[REQUEST_BLOCKNUMBER]).to.equal((await ethers.provider.getBlock("latest")).number);
+
+            // We expect to not accept requests until the timeout
+            await expect(tokenDistribution.connect(recipient).request(1)).to.be.reverted;
+
+            // Instantly mine blocks
+            await mine(TIMEOUT);
+
+            // After the timeout has expired, the recipient is expected to perform the request
+            await tokenDistribution.connect(recipient).request(1)
+            expect((await tokenDistribution.currentRequest())[REQUEST_BLOCKNUMBER]).to.equal((await ethers.provider.getBlock("latest")).number);
         });
     });
 });
