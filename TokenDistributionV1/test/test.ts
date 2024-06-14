@@ -77,8 +77,10 @@ describe("OntologyToken", function() {
     // Test suites
     // --------------------------------------------------------------------------
 
+    const MINTING_AMOUNT = 10000;
+
     describe("Deployment", suiteDeployment());
-    describe("Minting", suiteMinting(10000));   
+    describe("Minting", suiteMinting(MINTING_AMOUNT));   
 
     // --------------------------------------------------------------------------
 
@@ -93,30 +95,23 @@ describe("OntologyToken", function() {
 
 describe("TokenDistribution", function() {
     // --------------------------------------------------------------------------
-    // State and fixtures
+    // Contract constants and fixtures
     // --------------------------------------------------------------------------
-
-    async function getParticipantsFixture() {
-        const [owner, recipient, val_0, val_1, val_2, val_3, val_4] = await hre.ethers.getSigners();
-        const validators = [val_0, val_1, val_2, val_3, val_4]; // validators as part of an array
-
-        return {owner, recipient, validators};
-    }
 
     const REQUEST_AMOUNT = 0;
     const REQUEST_BLOCKNUMBER = 1;
     // const REQUEST_APPROVALVALIDATORS = 2;
 
-    let owner, recipient;
-    let validators;
+    async function getParticipantsFixture() {
+        const [owner, recipient, val_0, val_1, val_2, val_3, val_4, val_5, val_6, val_7, val_8] = await hre.ethers.getSigners();
+        const validatorsSets = {
+            a: [val_0, val_1, val_2],
+            b: [val_3, val_4, val_5],
+            c: [val_6, val_7, val_8]
+         };
 
-    // Participants are loaded once
-    before(async function() {
-        ({owner, recipient, validators} = await loadFixture(getParticipantsFixture));
-    });
-    
-    const TIMEOUT = 200; // blocks
-    const VALIDATORS_THRESHOLD = 3;
+        return {owner, recipient, validatorsSets};
+    }
 
     async function deployTokenDistributionFixture() {        
         // Deploy the ERC20 OntologyToken contract first
@@ -133,11 +128,6 @@ describe("TokenDistribution", function() {
         
         return {tokenDistribution, ontologyToken};
     }
-
-    let ontologyToken, tokenDistribution;
-
-    const DEPOSIT_AMOUNT = 10000n;
-    const WITHDRAWAL_AMOUNT = 8000n;
 
     // --------------------------------------------------------------------------
 
@@ -183,7 +173,9 @@ describe("TokenDistribution", function() {
     function caseValidatorsManagement() {
         return function() {
             it(`Should correctly add the validators`, async function() {
-                for (const val of validators) {
+                const allValidators = Object.values(validatorsSets).flat(); // flattens the array of arrays into a single one
+
+                for (const val of allValidators) {
                     // Before the action, the address should not belong to the validators mapping
                     expect(await tokenDistribution.validators(val.address)).false;
                     
@@ -192,14 +184,18 @@ describe("TokenDistribution", function() {
                 }
             });
             
-            it("Should correctly remove a validator", async function() {
-                const validatorToBeRemoved = validators[validators.length-1] // the last validator in the array
-    
-                // Before the action, the address must appear in the validators mapping
-                expect(await tokenDistribution.validators(validatorToBeRemoved.address)).true;
-    
-                await tokenDistribution.removeValidator(validatorToBeRemoved.address);
-                expect(await tokenDistribution.validators(validatorToBeRemoved.address)).false;
+            it("Should correctly remove validators", async function() {
+                const keys = Object.keys(validatorsSets);
+                const lastKey = keys[keys.length - 1];
+
+                // Remove all the validators in the last set
+                for (const val of validatorsSets[lastKey]) {
+                    // Before the action, the address must appear in the validators mapping
+                    expect(await tokenDistribution.validators(val.address)).true;
+                    
+                    await tokenDistribution.removeValidator(val.address);
+                    expect(await tokenDistribution.validators(val.address)).false;
+                }                
             });
         };
     }
@@ -244,31 +240,48 @@ describe("TokenDistribution", function() {
         };
     }
 
-    function caseApprove() {
+    function caseApprove(approvalsSetKey) {    
         return function() {
-            it('Should not accept a vote from an address not in the validators map', async function() {
-                const noLongerAValidator = validators.pop(); // Removes the participant from the array too (this partecipant had be removed from the contract's validators list before)
-                await expect(tokenDistribution.connect(noLongerAValidator).approve()).to.be.reverted;
+            it('Should not accept a vote from addresses not in the validators map', async function() {
+                const allSetsKeys = Object.keys(validatorsSets);
+                // The last set had been removed from the contract's validators map during the Validators management tests
+                const removedValidatorsSetKey = allSetsKeys[allSetsKeys.length - 1]; 
+
+                for (const val of validatorsSets[removedValidatorsSetKey]) {
+                    await expect(tokenDistribution.connect(val).approve()).to.be.reverted;
+                }
             });
-    
+
             it('Should let validators approve the request correctly', async function() {
-                for(let i=0; i<VALIDATORS_THRESHOLD; i++) {
-                    await tokenDistribution.connect(validators[i]).approve();
+                let i=0; // this index iterates the validators array **in the contract**
+                for(const val of validatorsSets[approvalsSetKey]) {
+                    await tokenDistribution.connect(val).approve();
                     // The number of validators in the current request should have increased by 1
                     expect(await tokenDistribution.getNumberOfValidatorsInCurrentRequest()).to.equal(i+1);
     
                     // The current validator must be set correctly
-                    expect((await tokenDistribution.getApprovalValidatorsInCurrentRequest())[i]).to.equal(validators[i].address);
+                    expect((await tokenDistribution.getApprovalValidatorsInCurrentRequest())[i]).to.equal(val.address);
+                    i++;
                 }
             });
     
-            it('Should not let a validator vote twice', async function() {
-                await expect(tokenDistribution.connect(validators[0]).approve()).to.be.reverted;
+            it('Should not let validators vote twice', async function() {
+                for(const val of validatorsSets[approvalsSetKey]) {
+                    await expect(tokenDistribution.connect(val).approve()).to.be.reverted;
+                }
             });
         
             it('Should not accept more votes', async function() {
-                const anotherValidator = validators.pop(); // Removes the participant from the array too
-                await expect(tokenDistribution.connect(anotherValidator).approve()).to.be.reverted;
+                const allSetsKeys = Object.keys(validatorsSets);
+                // All the sets of validators that are not the current request approvals and the last one (since these are not longer validators at this step)
+                const otherValidatorsSetsKeys = allSetsKeys.filter(key => (key != approvalsSetKey && key != allSetsKeys[allSetsKeys.length - 1]));
+                
+                let otherValidators = []; 
+                for(const key of otherValidatorsSetsKeys) {otherValidators = otherValidators.concat(validatorsSets[key]);}
+
+                for(const val of otherValidators) {
+                    await expect(tokenDistribution.connect(val).approve()).to.be.reverted;
+                }
             });
         };
     }
@@ -338,17 +351,32 @@ describe("TokenDistribution", function() {
     // Test suites
     // --------------------------------------------------------------------------
 
-    // Deploy the contract once
+    const TIMEOUT = 200; // blocks
+    const VALIDATORS_THRESHOLD = 3;
+
+    let owner, recipient;
+    let validatorsSets;
+    
+    let ontologyToken, tokenDistribution;
+    
     before(async function() {
+        // Participants are loaded once
+        ({owner, recipient, validatorsSets} = await loadFixture(getParticipantsFixture));
+
+        // Deploy the contract once
         ({tokenDistribution, ontologyToken} = await loadFixture(deployTokenDistributionFixture));
     });
 
+    const DEPOSIT_1_AMOUNT = 10000n;
+    const WITHDRAWAL_1_AMOUNT = 8000n;
+    const WITHDRAWAL_2_AMOUNT = DEPOSIT_1_AMOUNT - WITHDRAWAL_1_AMOUNT;
+    
     describe("Deployment", caseDeployment(TIMEOUT, VALIDATORS_THRESHOLD));
-    describe("Validators management", caseValidatorsManagement());    
-    describe("Deposit", caseDeposit(DEPOSIT_AMOUNT));
-    describe("Request", caseRequest(WITHDRAWAL_AMOUNT));
-    describe("Approve", caseApprove()); // TODO: manage validators inside caseApprove
-    describe("Withdraw", caseWithdraw(WITHDRAWAL_AMOUNT));
+    describe("Validators management", caseValidatorsManagement());  
+    describe("Deposit", caseDeposit(DEPOSIT_1_AMOUNT));
+    describe("Request", caseRequest(WITHDRAWAL_1_AMOUNT));
+    describe("Approve", caseApprove('a'));
+    describe("Withdraw", caseWithdraw(WITHDRAWAL_1_AMOUNT));
     describe("Timeout", caseTimeout());
 
     // TODO: another request
