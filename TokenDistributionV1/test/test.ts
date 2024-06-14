@@ -289,27 +289,29 @@ describe("TokenDistribution", function() {
     function caseWithdraw(amount: BigInt) {
         return function() {
             let contractBalanceBeforeWithdraw: BigInt;
+            let recipientBalanceBeforeWithdraw: BigInt;
+
+            let expectedContractBalance: BigInt;
+            let expectedRecipientBalance: BigInt;
 
             before(async function() {
                 contractBalanceBeforeWithdraw = await ontologyToken.balanceOf(tokenDistribution.target);
+                recipientBalanceBeforeWithdraw = await ontologyToken.balanceOf(recipient.address);
+                
+                expectedContractBalance = contractBalanceBeforeWithdraw - amount;
+                expectedRecipientBalance = recipientBalanceBeforeWithdraw + amount;
             });
              
             it('Should let the recipient withdraw', async function() {
                 await tokenDistribution.connect(recipient).withdraw();
             });
     
-            it('Should transfer the correct amount to the recipient', async function() {
-                expect(await ontologyToken.balanceOf(recipient.address)).to.equal(amount);
-            });
-
-            let expectedAmountInContract: BigInt;
-
-            before(async function() {
-                expectedAmountInContract = contractBalanceBeforeWithdraw - amount;
+            it(`Should transfer ${amount} tokens to the recipient`, async function() {
+                expect(await ontologyToken.balanceOf(recipient.address)).to.equal(expectedRecipientBalance);
             });
     
-            it(`Should have ${expectedAmountInContract} tokens left in its balance`, async function() {
-                expect(await ontologyToken.balanceOf(tokenDistribution.target)).to.equal(expectedAmountInContract);
+            it(`Should have the correct amount of tokens left in its balance`, async function() {
+                expect(await ontologyToken.balanceOf(tokenDistribution.target)).to.equal(expectedContractBalance);
             });
     
             it(`Should reset the request's status`, async function() {
@@ -341,6 +343,9 @@ describe("TokenDistribution", function() {
                 // After the timeout has expired, the recipient is expected to perform the request
                 await tokenDistribution.connect(recipient).request(1)
                 expect((await tokenDistribution.currentRequest())[REQUEST_BLOCKNUMBER]).to.equal((await ethers.provider.getBlock("latest")).number);
+
+                // Pass the timeout to perform the other tests 
+                await mine(TIMEOUT);
             });
         };
     }
@@ -373,13 +378,19 @@ describe("TokenDistribution", function() {
     
     describe("Deployment", caseDeployment(TIMEOUT, VALIDATORS_THRESHOLD));
     describe("Validators management", caseValidatorsManagement());  
-    describe("Deposit", caseDeposit(DEPOSIT_1_AMOUNT));
-    describe("Request", caseRequest(WITHDRAWAL_1_AMOUNT));
-    describe("Approve", caseApprove('a'));
-    describe("Withdraw", caseWithdraw(WITHDRAWAL_1_AMOUNT));
+    describe(`Deposit (${DEPOSIT_1_AMOUNT} tokens)`, caseDeposit(DEPOSIT_1_AMOUNT));
+    
+    // First withdrawal, approved by the set 'a'
+    describe(`Request (${WITHDRAWAL_1_AMOUNT} tokens)`, caseRequest(WITHDRAWAL_1_AMOUNT));
+    describe(`Approve (${WITHDRAWAL_1_AMOUNT} tokens)`, caseApprove('a'));
+    describe(`Withdraw (${WITHDRAWAL_1_AMOUNT} tokens)`, caseWithdraw(WITHDRAWAL_1_AMOUNT));
+    
     describe("Timeout", caseTimeout());
-
-    // TODO: another request
+    
+    // Second withdrawal, approved by the set 'b'
+    describe(`Request (${WITHDRAWAL_2_AMOUNT} tokens)`, caseRequest(WITHDRAWAL_2_AMOUNT));
+    describe(`Approve (${WITHDRAWAL_2_AMOUNT} tokens)`, caseApprove('b'));
+    describe(`Withdraw (${WITHDRAWAL_2_AMOUNT} tokens)`, caseWithdraw(WITHDRAWAL_2_AMOUNT));
 
     // --------------------------------------------------------------------------
 
