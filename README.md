@@ -179,12 +179,18 @@ npm run test:echidna
 ## Deploy the contract
 
 ```bash
-npx hardhat run --network <networkName> scripts/deploy.ts
+npm run deploy:<networkName>
 ```
 
-```<networkName>``` must be defined in the ```hardhat.config.ts``` file.
+```<networkName>``` must be defined in the ```hardhat.config.ts``` file and the npm command must be defined in the ```package.json``` file.
 
-Example where ```<networkName>``` is ```bnbTestnet```:
+### Example where ```<networkName>``` is ```bnbTestnet```
+
+```bash
+npm run deploy:bnbTestnet
+```
+
+>```hardhat.config.ts```:
 
 ```
 const config: HardhatUserConfig  = {
