@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "deploy:bnbTestnet": "npx hardhat run --network bnbTestnet scripts/deploy.ts",
-    "deploy:hardhat": "npx hardhat run scripts/deploy.ts",
+    "interact:bnbTestnet": "npx hardhat run --network bnbTestnet  scripts/interact.ts",
     "test:echidna": "solc-select use 0.8.25 && echidna --contract EchidnaTokenDistribution echidna/EchidnaTokenDistribution.sol --config echidna/echidna.config.yaml",
     "test:hardhat": "npx hardhat test"
   },

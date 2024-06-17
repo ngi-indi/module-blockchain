@@ -29,12 +29,11 @@ async function main() {
         timeout
     );
 
-    // Add the network name property associated to the contracts addresses
+    // Add the network name property associated to the contract address
     deploymentJSON['networkName'] = (await ethers.provider.getNetwork()).name;
 
-    // Add the properties for the two contract addresses
-    deploymentJSON['ontologyTokenAddress'] = ontologyTokenAddress;
-    deploymentJSON['tokenDistributionAddress'] = tokenDistribution.target;
+    // Add the property for the TokenDistribution contract address
+    deploymentJSON['contractAddress'] = tokenDistribution.target;
 
     // Overwrite the JSON file
     fs.writeFileSync(DEPLOYMENT_FILE_PATH, JSON.stringify(deploymentJSON, null, '\t'));

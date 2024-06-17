@@ -2,6 +2,5 @@
 	"validatorsThreshold": 3,
 	"timeout": 200,
 	"networkName": "bnbTestnet",
-	"ontologyTokenAddress": "0x45318797Df01fB86F8b6A1013e8B68c495441b1c",
-	"tokenDistributionAddress": "0x3c10FC0B053FBef93141DA9BB11D1554368A00A7"
+	"contractAddress": "0xA9E6C0C7EF2AEC3A83016E699137114015cdC75B"
 }

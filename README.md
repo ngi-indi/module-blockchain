@@ -219,3 +219,9 @@ const myContract = await (await ethers.getContractFactory(contractName)).attach(
 
 await myContract.myAction();
 ```
+
+<!--
+```bash
+npx hardhat run --network <networkName> scripts/interact.ts
+```
+-->
