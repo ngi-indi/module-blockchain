@@ -24,11 +24,17 @@ After the creation, the contract allows these actions:
 
 The following commands are defined in the [```package.json```](./package.json) file.
 
+- ```run npm generate-wallet```\
+Prints a new generated [```HDNodeWallet```](https://docs.ethers.org/v6-beta/api/wallet/#HDNodeWallet).
+
 - ```run npm deploy:bnbTestnet```\
 Deploys the contracts into the BNB Testnet Chain. 
 
-- [DEPRECATED] ```run npm interact:bnbTestnet```\
-Executes the contract interaction script for the deployed contract in the BNB Testnet Chain.
+- ```run npm docker:instance <name>```\
+Runs a Docker container interactable (tty) instance with a specified ```<name>```.\
+```<name>``` must be a valid participant name specified in the [```compose.yaml```](./compose.yaml) file. \
+Example: ```run npm docker:instance owner```
+
 
 - ```run npm test:echidna```\
 Launches Echidna to fuzz test the contracts.

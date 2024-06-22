@@ -1,4 +1,34 @@
 services:
+  owner:
+    build: .
+    tty: true
+    environment:
+      - PRIVATE_KEY=${PRIVATE_KEY_1}
+
+  recipient:
+    build: .
+    tty: true
+    environment:
+      - PRIVATE_KEY=${PRIVATE_KEY_2}
+
+  validator-1:
+    build: .
+    tty: true
+    environment:
+      - PRIVATE_KEY=${PRIVATE_KEY_3}
+
+  validator-2:
+    build: .
+    tty: true
+    environment:
+      - PRIVATE_KEY=${PRIVATE_KEY_4}
+
+  validator-3:
+    build: .
+    tty: true
+    environment:
+      - PRIVATE_KEY=${PRIVATE_KEY_5}
+
   test-echidna:
     build: .
     tty: true

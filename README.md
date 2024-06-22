@@ -266,7 +266,7 @@ sudo docker compose up --build
 In this example the instance name is ```<MyInstance>``` and it has to be declared in the ```compose.yaml``` file:
 
 ```bash
-sudo docker compose up --build -d <MyInstance>
+sudo docker compose up --build <MyInstance>
 ```
 
 ### Interact with an instance:
@@ -281,7 +281,7 @@ property to the instance's definition in the ```compose.yaml``` file.\
 Run the instance:
 
 ```bash
-sudo docker compose up <MyInstance>
+sudo docker compose up -d <MyInstance>
 ```
 
 In another shell, run:
