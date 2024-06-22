@@ -1,0 +1,9 @@
+services:
+  test-echidna:
+    build: .
+    tty: true
+
+  test-hardhat:
+    build: .
+    tty: true
+    command: npm run test:hardhat

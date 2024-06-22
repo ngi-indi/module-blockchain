@@ -37,7 +37,7 @@ Download the Hardhat modules:
 npm install --save-dev hardhat
 ```
 
-Create a Hardhat project
+### Create a Hardhat project
 
 ```bash
 npx hardhat init
@@ -71,6 +71,19 @@ Modify the compiler version in the [```hardhat.config.js```](hardhat.config.js) 
 
 
 > [Configure TypeScript](https://hardhat.org/hardhat-runner/docs/guides/typescript) if needed.
+
+### Install Docker
+
+```bash
+sudo apt update
+sudo apt install apt-transport-https ca-certificates curl software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
+apt-cache policy docker-ce
+sudo apt install docker-ce
+
+sudo apt  install docker-compose
+```
 
 ### Install Echidna
 
@@ -147,11 +160,13 @@ To run the tests, execute:
 npx hardhat test
 ```
 
-Or, alternatively: 
+<!--
+Or, alternatively (if defined in package.json): 
 
 ```bash
 npm run test:hardhat
 ```
+-->
 
 <!--
 Run tests on a specific network
@@ -173,21 +188,21 @@ Before running the tests, make sure:
 To execute, run:
 
 ```bash
-npm run test:echidna
+solc-select use 0.8.25 && echidna --contract Echidna<ContractName> echidna/Echidna<ContractName>.sol --config echidna/echidna.config.yaml
 ``` 
 
 ## Deploy the contract
 
 ```bash
-npm run deploy:<networkName>
+npx hardhat run --network <networkName> scripts/deploy.ts
 ```
 
-```<networkName>``` must be defined in the ```hardhat.config.ts``` file and the npm command must be defined in the ```package.json``` file.
+```<networkName>``` must be defined in the ```hardhat.config.ts``` file.
 
 ### Example where ```<networkName>``` is ```bnbTestnet```
 
 ```bash
-npm run deploy:bnbTestnet
+npx hardhat run --network bnbTestnet scripts/deploy.ts
 ```
 
 >```hardhat.config.ts```:
@@ -225,3 +240,64 @@ await myContract.myAction();
 npx hardhat run --network <networkName> scripts/interact.ts
 ```
 -->
+
+## Docker
+
+### Clean instances:
+
+```bash
+sudo docker compose rm -f
+```
+
+<!-- 
+```bash
+sudo docker system prune
+```
+-->
+
+### Build all instances:
+
+```bash
+sudo docker compose up --build
+```
+
+### Build a specific instance 
+
+In this example the instance name is ```<MyInstance>``` and it has to be declared in the ```compose.yaml``` file:
+
+```bash
+sudo docker compose up --build -d <MyInstance>
+```
+
+### Interact with an instance:
+
+Add the 
+
+```
+tty: true
+```
+
+property to the instance's definition in the ```compose.yaml``` file.\
+Run the instance:
+
+```bash
+sudo docker compose up <MyInstance>
+```
+
+In another shell, run:
+
+```bash
+sudo docker ps
+```
+
+Copy the ```CONTAINER ID``` or ```NAMES``` values down and execute:
+
+```bash
+sudo docker exec -it <CONTAINER ID> /bin/bash
+```
+
+### Stop a running instance:
+
+```bash
+sudo docker stop <CONTAINER ID>
+```

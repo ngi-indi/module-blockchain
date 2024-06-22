@@ -109,8 +109,6 @@ contract EchidnaTokenDistribution is TokenDistribution
             // The request block number should not change (i.e. the request() has failed)
             assert(this.getBlockNumberInCurrentRequest() == lastRequestTime);
         }
-
-        assert(true);
     }
 
     // -----------------------------------------------------------

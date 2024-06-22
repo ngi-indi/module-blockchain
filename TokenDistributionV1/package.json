@@ -7,7 +7,11 @@
     "deploy:bnbTestnet": "npx hardhat run --network bnbTestnet scripts/deploy.ts",
     "interact:bnbTestnet": "npx hardhat run --network bnbTestnet  scripts/interact.ts",
     "test:echidna": "solc-select use 0.8.25 && echidna --contract EchidnaTokenDistribution echidna/EchidnaTokenDistribution.sol --config echidna/echidna.config.yaml",
-    "test:hardhat": "npx hardhat test"
+    "test:hardhat": "npx hardhat test",
+    "docker:clear": "sudo docker compose rm -f && sudo docker system prune",
+    "docker:clear-all": "sudo docker compose rm -f && sudo docker system prune -a",
+    "docker:test:echidna": "bash ./scripts/docker/test-echidna.sh",
+    "docker:test:hardhat": "bash ./scripts/docker/test-hardhat.sh"
   },
   "repository": {
     "type": "git",
@@ -26,7 +30,7 @@
   "homepage": "https://github.com/ngi-indi/module-blockchain/tree/experimental#readme",
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",
-    "chai": "4.1.2",
+    "chai": "^4.1.2",
     "hardhat": "^2.22.5",
     "mocha": "^10.4.0"
   },
