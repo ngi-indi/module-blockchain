@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "generate-wallet": "npx hardhat run scripts/generate-wallet.ts",
-    "deploy:bnbTestnet": "npx hardhat run --network bnbTestnet scripts/deploy.ts",
-    "interact:bnbTestnet": "npx hardhat run --network bnbTestnet  scripts/interact.ts",
+    "deploy": "bash ./scripts/npm-deploy.sh",
     "test:echidna": "solc-select use 0.8.25 && echidna --contract EchidnaTokenDistribution echidna/EchidnaTokenDistribution.sol --config echidna/echidna.config.yaml",
     "test:hardhat": "npx hardhat test",
     "docker:clear": "sudo docker compose rm -f && sudo docker system prune",

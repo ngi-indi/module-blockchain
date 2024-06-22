@@ -27,14 +27,15 @@ The following commands are defined in the [```package.json```](./package.json) f
 - ```run npm generate-wallet```\
 Prints a new generated [```HDNodeWallet```](https://docs.ethers.org/v6-beta/api/wallet/#HDNodeWallet).
 
-- ```run npm deploy:bnbTestnet```\
-Deploys the contracts into the BNB Testnet Chain. 
+- ```run npm deploy <networkName>```\
+Deploys the contracts into the ```<networkName>``` network.\
+```<networkName>``` must be a valid network name specified in the [```hardhat.config.ts```](./hardhat.config.ts) file. \
+Example: ```run npm deploy bnbTestnet```
 
 - ```run npm docker:instance <name>```\
 Runs a Docker container interactable (tty) instance with a specified ```<name>```.\
 ```<name>``` must be a valid participant name specified in the [```compose.yaml```](./compose.yaml) file. \
 Example: ```run npm docker:instance owner```
-
 
 - ```run npm test:echidna```\
 Launches Echidna to fuzz test the contracts.
