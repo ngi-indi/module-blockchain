@@ -46,8 +46,8 @@ Runs all the unit test within hardhat.
 - ```npm run docker:clear```\
 Removes all the Docker cached instances.
 
-- ```npm run test:clear-all```\
-Similar to ```npm run docker:clear``` but more aggressive.
+- ```npm run docker:clear-all```\
+Similar to ```npm run docker:clear``` but more aggressive. It prunes all the local Docker images.
 
 - ```npm run docker:test:echidna```\
 Launches Echidna to fuzz test the contracts in a Docker container.
@@ -188,5 +188,5 @@ sudo docker rm -vf $(docker ps -aq)
 In case we need to clear all the Docker images, we can run:  
 
 ```bash
-npm run docker:clean-all
+npm run docker:clear-all
 ```
