@@ -30,10 +30,17 @@ services:
       - PRIVATE_KEY=${PRIVATE_KEY_5}
 
   test-echidna:
-    build: .
+    build: 
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - INSTALL_ECHIDNA=true
+        - INSTALL_PIP=true
     tty: true
 
   test-hardhat:
     build: .
     tty: true
     command: npm run test:hardhat
+    environment:
+      - PRIVATE_KEY=${PRIVATE_KEY_1}

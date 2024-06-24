@@ -24,7 +24,7 @@ After the creation, the contract allows these actions:
 
 The following commands are defined in the [```package.json```](./package.json) file.
 
-README: All the commands require a wallet passphrase defined in the environment as ```$PRIVATE_KEY```.
+**README**: All the commands require a wallet passphrase defined in the environment as ```$PRIVATE_KEY```.
 
 - ```npm run generate-wallet```\
 Prints a new generated [```HDNodeWallet```](https://docs.ethers.org/v6-beta/api/wallet/#HDNodeWallet).
