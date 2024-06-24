@@ -15,5 +15,6 @@ COPY . .
 
 # Install external dependencies
 RUN chmod +x ./docker-dependencies/install-*.sh
+RUN ./docker-dependencies/install-apt.sh
 RUN ./docker-dependencies/install-pip.sh
 RUN ./docker-dependencies/install-echidna.sh

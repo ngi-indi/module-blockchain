@@ -2,5 +2,5 @@
 	"validatorsThreshold": 3,
 	"timeout": 200,
 	"networkName": "bnbTestnet",
-	"contractAddress": "0x89C918A009aF9f8833f7ffA75B484AD57D920A62"
+	"contractAddress": "0x60Bd56D49938a995B06eCd4345ad0480e805f0Ec"
 }
