@@ -24,33 +24,33 @@ After the creation, the contract allows these actions:
 
 The following commands are defined in the [```package.json```](./package.json) file.
 
-- ```run npm generate-wallet```\
+- ```npm run generate-wallet```\
 Prints a new generated [```HDNodeWallet```](https://docs.ethers.org/v6-beta/api/wallet/#HDNodeWallet).
 
-- ```run npm deploy <networkName>```\
+- ```npm run deploy <networkName>```\
 Deploys the contracts into the ```<networkName>``` network.\
 ```<networkName>``` must be a valid network name specified in the [```hardhat.config.ts```](./hardhat.config.ts) file. \
-Example: ```run npm deploy bnbTestnet```
+Example: ```npm run deploy bnbTestnet```
 
-- ```run npm docker:instance <name>```\
+- ```npm run docker:instance <name>```\
 Runs a Docker container interactable (tty) instance with a specified ```<name>```.\
 ```<name>``` must be a valid participant name specified in the [```compose.yaml```](./compose.yaml) file. \
-Example: ```run npm docker:instance owner```
+Example: ```npm run docker:instance owner```
 
-- ```run npm test:echidna```\
+- ```npm run test:echidna```\
 Launches Echidna to fuzz test the contracts.
 
-- ```run npm test:hardhat```\
+- ```npm run test:hardhat```\
 Runs all the unit test within hardhat.
 
-- ```run npm docker:clear```\
+- ```npm run docker:clear```\
 Removes all the Docker cached instances.
 
-- ```run npm test:clear-all```\
-Similar to ```run npm docker:clear``` but more aggressive.
+- ```npm run test:clear-all```\
+Similar to ```npm run docker:clear``` but more aggressive.
 
-- ```run npm docker:test:echidna```\
+- ```npm run docker:test:echidna```\
 Launches Echidna to fuzz test the contracts in a Docker container.
 
-- ```run npm docker:test:hardhat```\
+- ```npm run docker:test:hardhat```\
 Runs all the unit test within hardhat in a Docker container.
