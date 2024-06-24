@@ -24,6 +24,9 @@ case $1 in
     ;;
 esac
 
+# Remove all the Docker networks to solve the ambiguous networks name error
+sudo docker network prune
+
 # Prompt
 read -p "Do you want to run a fresh build of the container? (y/n): " response
 echo # new line

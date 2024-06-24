@@ -1,6 +1,7 @@
 {
 	"validatorsThreshold": 3,
 	"timeout": 200,
+	"recipientAddress": "0x60FC3E6Ad91Fc02Efa77E91b207603C4C397532f",
 	"networkName": "bnbTestnet",
-	"contractAddress": "0x60Bd56D49938a995B06eCd4345ad0480e805f0Ec"
+	"contractAddress": "0x64c40Ee2C39CED945e53757625De7d34253858Ab"
 }

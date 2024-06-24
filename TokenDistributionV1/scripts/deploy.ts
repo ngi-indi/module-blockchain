@@ -4,7 +4,7 @@ import fs from 'fs'; // filesystem (for JSON files)
 const DEPLOYMENT_FILE_PATH = __dirname + "/../deployment.json";
 
 async function main() {
-    const [owner, recipient, val_0, val_1, val_2, val_3] = await ethers.getSigners();
+    const [owner] = await ethers.getSigners();
     
     const data = fs.readFileSync(DEPLOYMENT_FILE_PATH, 'utf-8');
 
@@ -12,6 +12,7 @@ async function main() {
 
     const validatorsThreshold = deploymentJSON['validatorsThreshold'];
     const timeout = deploymentJSON['timeout']; // blocks
+    const recipientAddress = deploymentJSON['recipientAddress'];
 
     // Deploy the OntologyToken contract
     const ontologyTokenFactory = await ethers.getContractFactory("OntologyToken");
@@ -19,7 +20,6 @@ async function main() {
     
     // Deploy the TokenDistribution contract
     const ontologyTokenAddress = ontologyToken.target;
-    const recipientAddress = recipient.address;
     
     const tokenDistributionFactory = await ethers.getContractFactory("TokenDistribution");
     const tokenDistribution = await tokenDistributionFactory.deploy(

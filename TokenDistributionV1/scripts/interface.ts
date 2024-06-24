@@ -35,6 +35,7 @@ export class IOntologyToken {
     }
 
     async setup() {
+        // This cannot be performed in the constructor, since it's async
         this._ontologyToken = await (await ethers.getContractFactory("OntologyToken")).attach(this.contractAddress);
     }
 
@@ -56,8 +57,9 @@ export class IOntologyToken {
     // Actions
     // ---------------------------------------------------------
 
+    /** @returns Tx hash */
     async mint(amount) {
-        this._ontologyToken.mint(amount);
+        return (await this._ontologyToken.mint(amount)).hash;
     }
 
     /** @returns Tx hash */
@@ -92,7 +94,6 @@ export class ITokenDistribution {
     deploymentFilePath: string;
     deploymentJSON: Object;
     contractAddress: string;
-    _currentUser: string;
 
     // ---------------------------------------------------------
 
@@ -112,12 +113,11 @@ export class ITokenDistribution {
         this.validatorsThreshold = this.deploymentJSON.validatorsThreshold;
     }
 
-    async setup() {
+    async setup(address) {
+        // Contract address
         this._tokenDistribution = await (await ethers.getContractFactory("TokenDistribution")).attach(this.contractAddress);
-    }
 
-    changeUser(address) {
-        this._currentUser = address;
+        // User address
         this._tokenDistribution = this._tokenDistribution.connect(address);
     }
 
