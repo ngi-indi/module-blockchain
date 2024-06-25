@@ -183,6 +183,6 @@ With that call sequence, Echidna was able to approve the request with three vali
 
 All the following commands must be executed at the [root](../) of the project.
 
-- ```npm run test:echidna``` -> Verifies all the property with the real contract implementation on the host machine.
+- ```npm run test:echidna``` -> Verifies all the properties with the real contract implementation on the host machine.
 
-- ```npm run docker:test:echidna``` -> Verifies all the property with the real contract implementation on a Docker container.
+- ```npm run docker:test:echidna``` -> Verifies all the properties with the real contract implementation on a Docker container.
