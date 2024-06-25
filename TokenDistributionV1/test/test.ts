@@ -21,21 +21,21 @@ const ADDR_ZERO = '0x0000000000000000000000000000000000000000'
 
 
 // --------------------------------------------------------------------------
-// OntologyToken.sol tests
+// IndiToken.sol tests
 // --------------------------------------------------------------------------
 
-describe("OntologyToken", function() {
+describe("IndiToken", function() {
     // --------------------------------------------------------------------------
     // Fixtures
     // --------------------------------------------------------------------------
 
-    async function deployOntologyTokenFixture() {
+    async function deployIndiTokenFixture() {
         const [owner] = await hre.ethers.getSigners();
 
-        const OntologyTokenFactory = await hre.ethers.getContractFactory("OntologyToken");
-        const ontologyToken = await OntologyTokenFactory.deploy();
+        const indiTokenFactory = await hre.ethers.getContractFactory("IndiToken");
+        const indiToken = await indiTokenFactory.deploy();
 
-        return {ontologyToken, owner};
+        return {indiToken, owner};
     }
 
     // --------------------------------------------------------------------------
@@ -48,9 +48,9 @@ describe("OntologyToken", function() {
     function suiteDeployment() {
         return function() {
             it("Should have the correct owner", async function () {
-                const {ontologyToken, owner} = await loadFixture(deployOntologyTokenFixture);
+                const {indiToken, owner} = await loadFixture(deployIndiTokenFixture);
     
-                expect(await ontologyToken.owner()).to.equal(owner.address);
+                expect(await indiToken.owner()).to.equal(owner.address);
             });
         };
     }
@@ -58,14 +58,14 @@ describe("OntologyToken", function() {
     function suiteMinting(amount: BigInt) {
         return function() {
             it(`Should mint ${amount} tokens and give them to the owner`, async function(){
-                const {ontologyToken, owner} = await loadFixture(deployOntologyTokenFixture);
+                const {indiToken, owner} = await loadFixture(deployIndiTokenFixture);
             
                 // Perform the minting action
-                await ontologyToken.mint(amount)
-                const ownerBalance = await ontologyToken.balanceOf(owner.address);
+                await indiToken.mint(amount)
+                const ownerBalance = await indiToken.balanceOf(owner.address);
         
-                expect(await ontologyToken.totalSupply()).to.equal(ownerBalance);
-                expect(await ontologyToken.balanceOf(owner.address)).to.equal(ownerBalance);
+                expect(await indiToken.totalSupply()).to.equal(ownerBalance);
+                expect(await indiToken.balanceOf(owner.address)).to.equal(ownerBalance);
             });
         };
     }
@@ -114,19 +114,19 @@ describe("TokenDistribution", function() {
     }
 
     async function deployTokenDistributionFixture() {        
-        // Deploy the ERC20 OntologyToken contract first
+        // Deploy the ERC20 IndiToken contract first
         // Contracts are deployed using the first signer/account by default (source: https://hardhat.org/hardhat-runner/docs/getting-started#testing-your-contracts)
-        const ontologyTokenFactory = await hre.ethers.getContractFactory("OntologyToken");
-        const ontologyToken = await ontologyTokenFactory.deploy(); 
+        const indiTokenFactory = await hre.ethers.getContractFactory("IndiToken");
+        const indiToken = await indiTokenFactory.deploy(); 
         
-        const ontologyTokenAddress = ontologyToken.target;
+        const indiTokenAddress = indiToken.target;
         const recipientAddress = recipient.address;
 
         // Deploy the TokenDistribution contract
         const tokenDistributionFactory = await hre.ethers.getContractFactory("TokenDistribution");
-        const tokenDistribution = await tokenDistributionFactory.deploy(ontologyTokenAddress, recipientAddress, VALIDATORS_THRESHOLD, TIMEOUT);
+        const tokenDistribution = await tokenDistributionFactory.deploy(indiTokenAddress, recipientAddress, VALIDATORS_THRESHOLD, TIMEOUT);
         
-        return {tokenDistribution, ontologyToken};
+        return {tokenDistribution, indiToken};
     }
 
     // --------------------------------------------------------------------------
@@ -146,8 +146,8 @@ describe("TokenDistribution", function() {
                 expect(await tokenDistribution.recipient()).to.equal(recipient.address);
             });
     
-            it("Should set the OntologyToken contract address", async function() {
-                expect(await tokenDistribution.token()).to.equal(ontologyToken.target);
+            it("Should set the IndiToken contract address", async function() {
+                expect(await tokenDistribution.token()).to.equal(indiToken.target);
             });
     
             it(`Should set ${TIMEOUT} blocks as timeout`, async function() {
@@ -204,16 +204,16 @@ describe("TokenDistribution", function() {
         return function() {
             before(async function() {
                 // Owner mints a quantity of tokens (tested before)
-                await ontologyToken.mint(amount);
-                expect(await ontologyToken.balanceOf(owner.address)).to.equal(amount);
+                await indiToken.mint(amount);
+                expect(await indiToken.balanceOf(owner.address)).to.equal(amount);
     
                 // Before transfering ERC20 tokens, owner must call the ERC20 approve 
-                await ontologyToken.approve(tokenDistribution.target, amount);
+                await indiToken.approve(tokenDistribution.target, amount);
             });
     
             it(`Should deposit ${amount} tokens`, async function() {
                 await tokenDistribution.deposit(amount);
-                expect(await ontologyToken.balanceOf(tokenDistribution.target)).to.equal(amount);
+                expect(await indiToken.balanceOf(tokenDistribution.target)).to.equal(amount);
             });
         };
     }
@@ -222,7 +222,7 @@ describe("TokenDistribution", function() {
         return function() {
             it(`Should not accept a withdrawal request with number of tokens greater than the contract's balance`, async function() {
             // An invalid amount is the number of tokens own by the contract + 1
-            const invalidAmount = await ontologyToken.balanceOf(tokenDistribution.target) + 1n;
+            const invalidAmount = await indiToken.balanceOf(tokenDistribution.target) + 1n;
                 
                 // Different syntax from the other calls! (source: https://ethereum-waffle.readthedocs.io/en/latest/matchers.html#revert-with-message)
                 await expect(tokenDistribution.connect(recipient).request(invalidAmount)).to.be.reverted;
@@ -295,8 +295,8 @@ describe("TokenDistribution", function() {
             let expectedRecipientBalance: BigInt;
 
             before(async function() {
-                contractBalanceBeforeWithdraw = await ontologyToken.balanceOf(tokenDistribution.target);
-                recipientBalanceBeforeWithdraw = await ontologyToken.balanceOf(recipient.address);
+                contractBalanceBeforeWithdraw = await indiToken.balanceOf(tokenDistribution.target);
+                recipientBalanceBeforeWithdraw = await indiToken.balanceOf(recipient.address);
                 
                 expectedContractBalance = contractBalanceBeforeWithdraw - amount;
                 expectedRecipientBalance = recipientBalanceBeforeWithdraw + amount;
@@ -307,11 +307,11 @@ describe("TokenDistribution", function() {
             });
     
             it(`Should transfer ${amount} tokens to the recipient`, async function() {
-                expect(await ontologyToken.balanceOf(recipient.address)).to.equal(expectedRecipientBalance);
+                expect(await indiToken.balanceOf(recipient.address)).to.equal(expectedRecipientBalance);
             });
     
             it(`Should have the correct amount of tokens left in its balance`, async function() {
-                expect(await ontologyToken.balanceOf(tokenDistribution.target)).to.equal(expectedContractBalance);
+                expect(await indiToken.balanceOf(tokenDistribution.target)).to.equal(expectedContractBalance);
             });
     
             it(`Should reset the request's status`, async function() {
@@ -362,14 +362,14 @@ describe("TokenDistribution", function() {
     let owner, recipient;
     let validatorsSets;
     
-    let ontologyToken, tokenDistribution;
+    let indiToken, tokenDistribution;
     
     before(async function() {
         // Participants are loaded once
         ({owner, recipient, validatorsSets} = await loadFixture(getParticipantsFixture));
 
         // Deploy the contract once
-        ({tokenDistribution, ontologyToken} = await loadFixture(deployTokenDistributionFixture));
+        ({tokenDistribution, indiToken} = await loadFixture(deployTokenDistributionFixture));
     });
 
     const DEPOSIT_1_AMOUNT = 10000n;

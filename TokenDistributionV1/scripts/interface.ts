@@ -12,15 +12,15 @@ import * as fs from 'fs';
 
 
 // ---------------------------------------------------------
-// Ontology Token
+// Indi Token interface
 // ---------------------------------------------------------
 
-export class IOntologyToken {
+export class IIndiToken {
     // ---------------------------------------------------------
     // Attributes
     // ---------------------------------------------------------
     
-    _ontologyToken: Object; // Contract istance
+    _indiToken: Object; // Contract istance
     contractAddress: string;
 
     // ---------------------------------------------------------
@@ -36,7 +36,7 @@ export class IOntologyToken {
 
     async setup() {
         // This cannot be performed in the constructor, since it's async
-        this._ontologyToken = await (await ethers.getContractFactory("OntologyToken")).attach(this.contractAddress);
+        this._indiToken = await (await ethers.getContractFactory("IndiToken")).attach(this.contractAddress);
     }
 
     // ---------------------------------------------------------
@@ -47,7 +47,7 @@ export class IOntologyToken {
     // ---------------------------------------------------------
 
     async getBalanceOf(address) {
-        return (await this._ontologyToken.balanceOf(address));
+        return (await this._indiToken.balanceOf(address));
     }
 
     // ---------------------------------------------------------
@@ -59,12 +59,12 @@ export class IOntologyToken {
 
     /** @returns Tx hash */
     async mint(amount) {
-        return (await this._ontologyToken.mint(amount)).hash;
+        return (await this._indiToken.mint(amount)).hash;
     }
 
     /** @returns Tx hash */
     async approve(spender, amount): string {
-        return (await this._ontologyToken.approve(spender, amount)).hash;
+        return (await this._indiToken.approve(spender, amount)).hash;
     }
 
     // ---------------------------------------------------------
@@ -75,7 +75,7 @@ export class IOntologyToken {
 
 
 // ---------------------------------------------------------
-// Token Distribution
+// Token Distribution interface
 // ---------------------------------------------------------
 
 export class ITokenDistribution {

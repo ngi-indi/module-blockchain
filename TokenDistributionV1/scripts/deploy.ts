@@ -14,16 +14,16 @@ async function main() {
     const timeout = deploymentJSON['timeout']; // blocks
     const recipientAddress = deploymentJSON['recipientAddress'];
 
-    // Deploy the OntologyToken contract
-    const ontologyTokenFactory = await ethers.getContractFactory("OntologyToken");
-    const ontologyToken = await ontologyTokenFactory.deploy(); 
+    // Deploy the IndiToken contract
+    const indiTokenFactory = await ethers.getContractFactory("IndiToken");
+    const indiToken = await indiTokenFactory.deploy(); 
     
     // Deploy the TokenDistribution contract
-    const ontologyTokenAddress = ontologyToken.target;
+    const indiTokenAddress = indiToken.target;
     
     const tokenDistributionFactory = await ethers.getContractFactory("TokenDistribution");
     const tokenDistribution = await tokenDistributionFactory.deploy(
-        ontologyTokenAddress, 
+        indiTokenAddress, 
         recipientAddress, 
         validatorsThreshold, 
         timeout
@@ -38,7 +38,7 @@ async function main() {
     // Overwrite the JSON file
     fs.writeFileSync(DEPLOYMENT_FILE_PATH, JSON.stringify(deploymentJSON, null, '\t'));
 
-    console.log(`Ontology token contract address: ${ontologyTokenAddress}`);
+    console.log(`Indi token contract address: ${indiTokenAddress}`);
     console.log(`Token distribution contract address: ${tokenDistribution.target}`);
 }
 

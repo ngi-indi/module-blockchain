@@ -62,7 +62,7 @@ contract TokenDistribution
     // Functions
     // ---------------------------------------------------------
 
-    // Requires calling OntologyToken.approve() before deposit!
+    // Requires calling token.approve() before deposit!
     function deposit(uint _amount) public onlyOwner
     {
         require(_amount > 0, "Amount must be greater than zero!");

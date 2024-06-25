@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.1; // current version at the time of writing: 0.8.25+commit.b61c2a91
 
-import "../contracts/OntologyToken.sol";
+import "../contracts/IndiToken.sol";
 import "../contracts/TokenDistribution.sol";
 
 contract EchidnaTokenDistribution is TokenDistribution
@@ -27,7 +27,7 @@ contract EchidnaTokenDistribution is TokenDistribution
     // Token Distribution state
     // -----------------------------------------------------------
     
-    OntologyToken ontologyToken = new OntologyToken();
+    IndiToken indiToken = new IndiToken();
     
     address payable constant RECIPIENT = payable(ECHIDNA_ADDRESS_2);
     uint constant VALIDATORS_THRESHOLD = 3;
@@ -42,16 +42,16 @@ contract EchidnaTokenDistribution is TokenDistribution
     // -----------------------------------------------------------
 
     constructor() TokenDistribution(
-        ontologyToken,
+        indiToken,
         RECIPIENT,
         VALIDATORS_THRESHOLD,
         MINT_AMOUNT
     ) {
         // ERC20 actions
-        ontologyToken.mint(MINT_AMOUNT);
+        indiToken.mint(MINT_AMOUNT);
 
-        ontologyToken.approve(echidna_caller, MINT_AMOUNT);
-        ontologyToken.approve(echidna, MINT_AMOUNT);
+        indiToken.approve(echidna_caller, MINT_AMOUNT);
+        indiToken.approve(echidna, MINT_AMOUNT);
     }
     
     // -----------------------------------------------------------
@@ -75,11 +75,11 @@ contract EchidnaTokenDistribution is TokenDistribution
         emit Debug("Echidna caller: ", echidna_caller);
         emit Debug("Echidna address: ", echidna);
         emit Debug("TokenDistribution owner: ", this.owner());
-        emit Debug("OntologyToken owner: ", ontologyToken.owner());
+        emit Debug("IndiToken owner: ", indiToken.owner());
 
         assert(echidna_caller == ECHIDNA_ADDRESS_1);
         assert(this.owner() == echidna_caller);
-        assert(ontologyToken.owner() == echidna);
+        assert(indiToken.owner() == echidna);
     }
 
 
@@ -93,7 +93,7 @@ contract EchidnaTokenDistribution is TokenDistribution
         request(_amount);
 
         // A request should always be less than or equal to the contract's tokens balance.
-        assert(currentRequest.amount <= ontologyToken.balanceOf(address(this)));
+        assert(currentRequest.amount <= indiToken.balanceOf(address(this)));
     }
 
 

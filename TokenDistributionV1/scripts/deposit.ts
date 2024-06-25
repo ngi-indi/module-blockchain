@@ -1,4 +1,4 @@
-import { ITokenDistribution, IOntologyToken } from "./interface.ts";
+import { ITokenDistribution, IIndiToken } from "./interface.ts";
 import { ethers } from "hardhat";
 
 const DEPLOYMENT_FILE_PATH = __dirname + "/../deployment.json";
@@ -15,8 +15,8 @@ async function main() {
     const tokenDistribution = new ITokenDistribution(DEPLOYMENT_FILE_PATH); 
     await tokenDistribution.setup(owner);
 
-    const ontologyToken = new IOntologyToken(await tokenDistribution.getManagedTokenAddress());
-    await ontologyToken.setup();
+    const indiToken = new IIndiToken(await tokenDistribution.getManagedTokenAddress());
+    await indiToken.setup();
 
     // -------------------------------------------------------------------
 

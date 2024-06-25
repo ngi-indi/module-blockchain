@@ -59,12 +59,12 @@ Runs all the unit test within hardhat in a Docker container.
 
 ### Environment
 
-In this execution scenario, we will deploy the OntologyToken and the  TokenDistribution contracts on the BNB Smart Chain testnet by using Docker. \
+In this execution scenario, we will deploy the IndiToken and the  TokenDistribution contracts on the BNB Smart Chain testnet by using Docker. \
 Each participant will have their own Docker instance and passphrase, as specified in the Docker [```compose.yaml```](compose.yaml) configuration file. \
 To achieve this, we need to define a ```.env``` environment file at the root of this project.\
 The ```.env``` file, containing all the participants' passphrases, will look like this: 
 
-```json
+```
 # Passphrases:
 PRIVATE_KEY_1="a million miles away your signal in the distance to whom it"
 PRIVATE_KEY_2="may concern I think I lost my way getting good at starting"
@@ -95,7 +95,7 @@ nano deployment.json
 
 A valid ```deployment.json``` file will look either like this: 
 
-```json
+```
 {
     "validatorsThreshold": 3,
     "timeout": 200,
@@ -127,7 +127,7 @@ npm run deploy bnbTestnet
 Output: 
 
 ```
-Ontology token contract address: 0x173b1b094872653b1C12D191D1cF9aE925150487
+Indi token contract address: 0x173b1b094872653b1C12D191D1cF9aE925150487
 Token distribution contract address: 0x64c40Ee2C39CED945e53757625De7d34253858Ab
 ```
 
@@ -248,7 +248,7 @@ npx hardhat run --network bnbTestnet scripts/check-status.ts
 
 Output:
 
-```json
+```
 Owner: 0x3C0B8E61a8016EF9536273A7987a539BB2Bb8184
 Recipient: 0x60FC3E6Ad91Fc02Efa77E91b207603C4C397532f
 Timeout: 200
@@ -288,7 +288,7 @@ touch validators.txt
 nano validators.txt
 ```
 
-```json
+```
 0xe62A590450E97A3021D23ca4236eE24cfb3C08d7
 0x5af498d1f321F811c27baba59F0E97152986d356
 0xa29E7a55f24E477D8ea204862CbFf44D0a0913da
@@ -302,7 +302,7 @@ npx hardhat run --network bnbTestnet scripts/add-validators.ts
 
 Output:
 
-```json
+```
 Add validator 0xe62A590450E97A3021D23ca4236eE24cfb3C08d7 tx hash: 0x9b41b04a7ddb1680e1414260c59e89d5bfe861578d3a466099a099dc14ce2911
 Add validator 0x5af498d1f321F811c27baba59F0E97152986d356 tx hash: 0x465eacef205d7348963263fd673c354b0e080ed23ab0739dc131f6fce27e73dd
 Add validator 0xa29E7a55f24E477D8ea204862CbFf44D0a0913da tx hash: 0x2f0071bff9074a417662676a03b155ef291218507e90f61950378cc7323abe18
@@ -318,7 +318,7 @@ npx hardhat run --network bnbTestnet scripts/deposit.ts
 
 Output:
 
-```json
+```
 Deposit tx hash:  0xe3ce06e3d7587792ced4f848f504d7fc518603e89fef80064c50ed8db9a12752
 ```
 
@@ -332,7 +332,7 @@ npx hardhat run --network bnbTestnet scripts/request.ts
 
 Output:
 
-```json
+```
 Request tx hash:  0xd52edf2aff4ad0b162fe506f7aebb455ba9796bb3043237f21fdcb258f73b632
 ```
 
@@ -346,15 +346,15 @@ npx hardhat run --network bnbTestnet scripts/approve.ts
 
 Outputs:
 
-```json
+```
 Validator 0xe62A590450E97A3021D23ca4236eE24cfb3C08d7, approve tx hash: 0xdd842a56370594663814041ab6ee7e9e5d80d280da69f937e6d9fe50d32effe7
 ```
 
-```json
+```
 Validator 0x5af498d1f321F811c27baba59F0E97152986d356, approve tx hash: 0x1531b783de77ab8f6a7df32ef3ec18aa6b9d52ff82b4c7d76279ca6bcc416e23
 ```
 
-```json
+```
 Validator 0xa29E7a55f24E477D8ea204862CbFf44D0a0913da, approve tx hash: 0x2cd1b6110df4701c66f06f527eaa541cddfec8db313757b0f25e53e02995a0dd
 ```
 
@@ -368,6 +368,6 @@ npx hardhat run --network bnbTestnet scripts/withdraw.ts
 
 Output:
 
-```json
+```
 Withdraw tx hash:  0xd9cb1efe07d2d15db7a2a8767279c339f48b184f307668c214edc3b4589a92a9
 ```
