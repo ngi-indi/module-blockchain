@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.1; // current version at the time of writing: 0.8.25+commit.b61c2a91
 
-import "../contracts/IndiToken.sol";
-import "../contracts/TokenDistribution.sol";
+import "../../contracts/IndiToken.sol";
+import "./TokenDistributionBugged.sol";
 
-contract EchidnaTokenDistribution is TokenDistribution
+contract EchidnaRequestAmount is TokenDistributionBugged
 {
     // -----------------------------------------------------------
     // Echidna addresses
@@ -41,7 +41,7 @@ contract EchidnaTokenDistribution is TokenDistribution
     // Echidna constructor
     // -----------------------------------------------------------
 
-    constructor() TokenDistribution(
+    constructor() TokenDistributionBugged(
         indiToken,
         RECIPIENT,
         VALIDATORS_THRESHOLD,
@@ -71,47 +71,12 @@ contract EchidnaTokenDistribution is TokenDistribution
     // Assertions
     // -----------------------------------------------------------
     
-    /*
-    // This function has been commented out since it needs to be executed once during project's lifespan
-    // (Otherwise these function calls steal resources for the other asserts)
-
-    function echidnaAddresses() public {
-        emit Debug("Echidna caller: ", echidna_caller);
-        emit Debug("Echidna address: ", echidna);
-        emit Debug("TokenDistribution owner: ", this.owner());
-        emit Debug("IndiToken owner: ", indiToken.owner());
-
-        assert(echidna_caller == ECHIDNA_ADDRESS_1);
-        assert(this.owner() == echidna_caller);
-        assert(indiToken.owner() == echidna);
-    }
-    */
-
     function echidnaRequestAmount(uint _amount) public {
         // Perform a request
         request(_amount);
 
         // A request should always be less than or equal to the contract's tokens balance.
         assert(currentRequest.amount <= indiToken.balanceOf(address(this)));
-    }
-
-
-    function echidnaRequestTimeout(uint _amount) public {
-        //  block number of the current request before a newer one
-        uint lastRequestTime = this.getBlockNumberInCurrentRequest();
-
-        // If the request has not yet expireed
-        if(block.number <= lastRequestTime + TIMEOUT) {
-            // Perform a new request
-            request(_amount);
-
-            // The request block number should not change (i.e. the request() has failed)
-            assert(this.getBlockNumberInCurrentRequest() == lastRequestTime);
-        }
-    }
-
-    function echidnaValidatorsThreshold() public {
-        assert(this.getNumberOfValidatorsInCurrentRequest() <= VALIDATORS_THRESHOLD);
     }
 
     // -----------------------------------------------------------

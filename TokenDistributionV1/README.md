@@ -1,5 +1,12 @@
 # TokenDistribution V1
 
+## Contents 
+
+- [Specification](#specification)
+- [Commands](#commands)
+- [Execution traces with Docker](#execution-traces-with-docker)
+- [Echidna](./echidna/)
+
 ## Specification
 
 The Token Distribution contract involves a user and a set of validators.
@@ -248,7 +255,7 @@ and
 cat deployment.json
 ```
 
-#### Check contracts status
+### Check contracts status
 
 Before interacting with the TokenDistribution contract, let's call the [```check-status.ts```](./scripts/check-status.ts) script from any instance to make sure the contract is alive and responding to our getter requests:
 
@@ -266,7 +273,7 @@ Output:
 >Validators in current request: 0 \
 >Block number in current request: 0
 
-#### ERC-20 management
+### ERC-20 management
 
 From the owner instance, run the [```erc20.ts```](./scripts/erc20.ts) script responsible for minting the tokens and call the ERC20 approve method for the contract address.
 
@@ -279,7 +286,7 @@ Output:
 >Mint tx hash:  [0x0c4dc37a0181e3d489e54f40de95ea1ab64f8d74564eb5380da3ca1ebc593f6d](https://testnet.bscscan.com/tx/0x0c4dc37a0181e3d489e54f40de95ea1ab64f8d74564eb5380da3ca1ebc593f6d) \
 >Approve tx hash:  [0xf5ffd35ff915e1059fc4352e37d1d3f561b1c631cd17c65d1db3855393fcce0d](https://testnet.bscscan.com/tx/0xf5ffd35ff915e1059fc4352e37d1d3f561b1c631cd17c65d1db3855393fcce0d)
 
-#### Add validators
+### Add validators
 
 We add three validator addresses to our contract:
 
