@@ -16,7 +16,7 @@ After the creation, the contract supports the following actions:
 - **removeValidator**: the contract owner removes a validator;
 - **request**: the recipient issues a withdraw request for a given token amount. This is only possible if there are not other pending requests. The request expires after the timeout;
 - **approve**: a validator can vote for the withdrawal request;
-- **withdraw**: if the withdraw request is approved, this action transfer the tokens to the recipient.
+- **withdraw**: if the withdraw request is approved, this action transfers the tokens to the recipient.
 
 ## Commands
 
@@ -73,6 +73,18 @@ PRIVATE_KEY_4="I ve waited long enough where do I begin learning to talk"
 PRIVATE_KEY_5="again cant you see I ve waited long enough where do I"
 ```
 
+### Participants
+
+| Address | Role  |
+|-------------------------------------------------------------------------------------------------------------------------------|-----------|
+| [0x3C0B8E61a8016EF9536273A7987a539BB2Bb8184](https://testnet.bscscan.com/address/0x3C0B8E61a8016EF9536273A7987a539BB2Bb8184)  |  Owner |
+| [0x60FC3E6Ad91Fc02Efa77E91b207603C4C397532f](https://testnet.bscscan.com/address/0x60FC3E6Ad91Fc02Efa77E91b207603C4C397532f)  | Recipient |
+| [0xe62A590450E97A3021D23ca4236eE24cfb3C08d7](https://testnet.bscscan.com/address/0xe62A590450E97A3021D23ca4236eE24cfb3C08d7)  | Validator |
+| [0x5af498d1f321F811c27baba59F0E97152986d356](https://testnet.bscscan.com/address/0x5af498d1f321F811c27baba59F0E97152986d356)  | Validator |
+| [0xa29E7a55f24E477D8ea204862CbFf44D0a0913da](https://testnet.bscscan.com/address/0xa29E7a55f24E477D8ea204862CbFf44D0a0913da)  | Validator |
+
+
+
 ### Deployment
 
 Run a Docker instance for the owner (whose passphrase is ```$PRIVATE_KEY_1```):
@@ -95,7 +107,7 @@ nano deployment.json
 
 A valid ```deployment.json``` file will look either like this: 
 
-```
+```json
 {
     "validatorsThreshold": 3,
     "timeout": 200,
@@ -126,10 +138,8 @@ npm run deploy bnbTestnet
 
 Output: 
 
-```
-Indi token contract address: 0x173b1b094872653b1C12D191D1cF9aE925150487
-Token distribution contract address: 0x64c40Ee2C39CED945e53757625De7d34253858Ab
-```
+>Indi token contract address: [0x3D72F805Bd60cEAEe59B20e32e4A411842750fD8](https://testnet.bscscan.com/address/0x3D72F805Bd60cEAEe59B20e32e4A411842750fD8) \
+>Token distribution contract address: [0xBA7F0a81aa2809112805FF9ab6a8f7a27Be36a40](https://testnet.bscscan.com/address/0xBA7F0a81aa2809112805FF9ab6a8f7a27Be36a40)
 
 Verify the ```deployment.json``` file has been correctly updated: 
 
@@ -145,7 +155,7 @@ Output:
     "timeout": 200,
     "recipientAddress": "0x60FC3E6Ad91Fc02Efa77E91b207603C4C397532f",
     "networkName": "bnbTestnet",
-    "contractAddress": "0x64c40Ee2C39CED945e53757625De7d34253858Ab"
+    "contractAddress": "0xBA7F0a81aa2809112805FF9ab6a8f7a27Be36a40"
 }
 ```
 
@@ -248,15 +258,13 @@ npx hardhat run --network bnbTestnet scripts/check-status.ts
 
 Output:
 
-```
-Owner: 0x3C0B8E61a8016EF9536273A7987a539BB2Bb8184
-Recipient: 0x60FC3E6Ad91Fc02Efa77E91b207603C4C397532f
-Timeout: 200
-Validators threshold: 3
-Token address: 0x9C8Dc873D9E337991F050da7282a9b4d47626b65
-Validators in current request: 0
-Block number in current request: 0
-```
+>Owner: [0x3C0B8E61a8016EF9536273A7987a539BB2Bb8184](https://testnet.bscscan.com/address/0x3C0B8E61a8016EF9536273A7987a539BB2Bb8184) \
+>Recipient: [0x60FC3E6Ad91Fc02Efa77E91b207603C4C397532f](https://testnet.bscscan.com/address/0x60FC3E6Ad91Fc02Efa77E91b207603C4C397532f) \
+>Timeout: 200 \
+>Validators threshold: 3 \
+>Token address: [0x3D72F805Bd60cEAEe59B20e32e4A411842750fD8](https://testnet.bscscan.com/address/0x3D72F805Bd60cEAEe59B20e32e4A411842750fD8) \
+>Validators in current request: 0 \
+>Block number in current request: 0
 
 #### ERC-20 management
 
@@ -268,18 +276,16 @@ npx hardhat run --network bnbTestnet scripts/erc20.ts
 
 Output:
 
-```json
-Mint tx hash:  0x9192c0232c293b1d898bcd8766ff86ef8c13d560936616b02d2e8d12937a4f80
-Approve tx hash:  0x9dfffe8f5414ed4914fdff039214bb927366fd1539d71a1f889943c71f39fabe
-```
+>Mint tx hash:  [0x0c4dc37a0181e3d489e54f40de95ea1ab64f8d74564eb5380da3ca1ebc593f6d](https://testnet.bscscan.com/tx/0x0c4dc37a0181e3d489e54f40de95ea1ab64f8d74564eb5380da3ca1ebc593f6d) \
+>Approve tx hash:  [0xf5ffd35ff915e1059fc4352e37d1d3f561b1c631cd17c65d1db3855393fcce0d](https://testnet.bscscan.com/tx/0xf5ffd35ff915e1059fc4352e37d1d3f561b1c631cd17c65d1db3855393fcce0d)
 
 #### Add validators
 
 We add three validator addresses to our contract:
 
-- 0xe62A590450E97A3021D23ca4236eE24cfb3C08d7
-- 0x5af498d1f321F811c27baba59F0E97152986d356
-- 0xa29E7a55f24E477D8ea204862CbFf44D0a0913da
+- [0xe62A590450E97A3021D23ca4236eE24cfb3C08d7](https://testnet.bscscan.com/address/0xe62A590450E97A3021D23ca4236eE24cfb3C08d7)
+- [0x5af498d1f321F811c27baba59F0E97152986d356](https://testnet.bscscan.com/address/0x5af498d1f321F811c27baba59F0E97152986d356)
+- [0xa29E7a55f24E477D8ea204862CbFf44D0a0913da](https://testnet.bscscan.com/address/0xa29E7a55f24E477D8ea204862CbFf44D0a0913da)
 
 From the owner instance, create a temporary file named ```validators.txt``` containing all the addresses we want to add separated by a new line:
 
@@ -302,11 +308,10 @@ npx hardhat run --network bnbTestnet scripts/add-validators.ts
 
 Output:
 
-```
-Add validator 0xe62A590450E97A3021D23ca4236eE24cfb3C08d7 tx hash: 0x9b41b04a7ddb1680e1414260c59e89d5bfe861578d3a466099a099dc14ce2911
-Add validator 0x5af498d1f321F811c27baba59F0E97152986d356 tx hash: 0x465eacef205d7348963263fd673c354b0e080ed23ab0739dc131f6fce27e73dd
-Add validator 0xa29E7a55f24E477D8ea204862CbFf44D0a0913da tx hash: 0x2f0071bff9074a417662676a03b155ef291218507e90f61950378cc7323abe18
-```
+>Add validator [0xe62A590450E97A3021D23ca4236eE24cfb3C08d7](https://testnet.bscscan.com/address/0xe62A590450E97A3021D23ca4236eE24cfb3C08d7) tx hash: [0xd5e3d2270dd9ecbe747d1dac9177c5cf753b516ad86542162a5221418838df02](https://testnet.bscscan.com/tx/0xd5e3d2270dd9ecbe747d1dac9177c5cf753b516ad86542162a5221418838df02) \
+>Add validator [0x5af498d1f321F811c27baba59F0E97152986d356](https://testnet.bscscan.com/address/0x5af498d1f321F811c27baba59F0E97152986d356) tx hash: [0x033b4ea5899689d67399305d0b02c192f153092934426d32353211610eccd867](https://testnet.bscscan.com/tx/0x033b4ea5899689d67399305d0b02c192f153092934426d32353211610eccd867) \
+>Add validator [0xa29E7a55f24E477D8ea204862CbFf44D0a0913da](https://testnet.bscscan.com/address/0xa29E7a55f24E477D8ea204862CbFf44D0a0913da) tx hash: [0x2ecfa4af5c40839c44b74881d6559f1731cbc916f877e7937df4d537ec8c266f](https://testnet.bscscan.com/tx/0x2ecfa4af5c40839c44b74881d6559f1731cbc916f877e7937df4d537ec8c266f)
+
 
 ### Deposit
 
@@ -318,9 +323,8 @@ npx hardhat run --network bnbTestnet scripts/deposit.ts
 
 Output:
 
-```
-Deposit tx hash:  0xe3ce06e3d7587792ced4f848f504d7fc518603e89fef80064c50ed8db9a12752
-```
+>Deposit tx hash:  [0x61cf853c7df29c81794a0ab37e1d1b9a8da6006e02da144f1a4408be0cfa9f89](https://testnet.bscscan.com/tx/0x61cf853c7df29c81794a0ab37e1d1b9a8da6006e02da144f1a4408be0cfa9f89)
+
 
 ### Withdrawal request
 
@@ -332,9 +336,8 @@ npx hardhat run --network bnbTestnet scripts/request.ts
 
 Output:
 
-```
-Request tx hash:  0xd52edf2aff4ad0b162fe506f7aebb455ba9796bb3043237f21fdcb258f73b632
-```
+>Request tx hash:  [0x38800078a30633ae2d23689937de1429dd01176f372a8309958d4edff89f1517](https://testnet.bscscan.com/tx/0x38800078a30633ae2d23689937de1429dd01176f372a8309958d4edff89f1517)
+
 
 ### Approve the request
 
@@ -346,17 +349,9 @@ npx hardhat run --network bnbTestnet scripts/approve.ts
 
 Outputs:
 
-```
-Validator 0xe62A590450E97A3021D23ca4236eE24cfb3C08d7, approve tx hash: 0xdd842a56370594663814041ab6ee7e9e5d80d280da69f937e6d9fe50d32effe7
-```
-
-```
-Validator 0x5af498d1f321F811c27baba59F0E97152986d356, approve tx hash: 0x1531b783de77ab8f6a7df32ef3ec18aa6b9d52ff82b4c7d76279ca6bcc416e23
-```
-
-```
-Validator 0xa29E7a55f24E477D8ea204862CbFf44D0a0913da, approve tx hash: 0x2cd1b6110df4701c66f06f527eaa541cddfec8db313757b0f25e53e02995a0dd
-```
+>Validator [0xe62A590450E97A3021D23ca4236eE24cfb3C08d7](https://testnet.bscscan.com/address/0xe62A590450E97A3021D23ca4236eE24cfb3C08d7), approve tx hash: [0x7349529c3f21ff528ad49bfc33815cf42342d399bf3f14ba39bbf3ca0ff6f0cd](https://testnet.bscscan.com/tx/0x7349529c3f21ff528ad49bfc33815cf42342d399bf3f14ba39bbf3ca0ff6f0cd)\
+>Validator [0x5af498d1f321F811c27baba59F0E97152986d356](https://testnet.bscscan.com/address/0x5af498d1f321F811c27baba59F0E97152986d356), approve tx hash: [0x5155b38a91eaa7098aa593c84c0b32205c78a2e097d6bea475ac8a889e1073c0](https://testnet.bscscan.com/tx/0x5155b38a91eaa7098aa593c84c0b32205c78a2e097d6bea475ac8a889e1073c0)\
+>Validator [0xa29E7a55f24E477D8ea204862CbFf44D0a0913da](https://testnet.bscscan.com/address/0xa29E7a55f24E477D8ea204862CbFf44D0a0913da), approve tx hash: [0x889a233d3d8f423a58e219998779aa06d5a06521f642389684410e32ab16be45](https://testnet.bscscan.com/tx/0x889a233d3d8f423a58e219998779aa06d5a06521f642389684410e32ab16be45)
 
 ### Withdraw
 
@@ -368,6 +363,4 @@ npx hardhat run --network bnbTestnet scripts/withdraw.ts
 
 Output:
 
-```
-Withdraw tx hash:  0xd9cb1efe07d2d15db7a2a8767279c339f48b184f307668c214edc3b4589a92a9
-```
+>Withdraw tx hash:  [0x6803fb5745276aa7b49ee12ee38912e915e909ec870bb7be6d6f744e201c3ef4](https://testnet.bscscan.com/tx/0x6803fb5745276aa7b49ee12ee38912e915e909ec870bb7be6d6f744e201c3ef4)
