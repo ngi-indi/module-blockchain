@@ -1,152 +1,179 @@
-# module-blockchain (experimental)
+# 🧪 module-blockchain (experimental)
 
-## List
+## 📕 Table of Contents
+
+<details open>
+<summary></summary>
+
+- [📜 Projects list](#📜-projects-list)
+- [📌 Requirements](#📌-requirements)
+- [🔧 Setup](#🔧-setup)
+- [🚧 Create a new Hardhat project](#🚧-create-a-new-hardhat-project)
+- [👷 Hardhat commands](#👷-hardhat-commands)
+	- [🛠️ Compile the contracts ](#️🛠️-compile-the-contracts)
+	- [🧹 Clear cache and compiled contracts files](#🧹-clear-cache-and-compiled-contracts-files)
+	- [✅ Run the tests](#✅-run-the-tests)
+	- [🚀 Deploy a contract](#🚀-deploy-a-contract)
+	- [💻 Interact with a deployed contract](#💻-interact-with-a-deployed-contract)
+- [🐋 Docker commands](#🐋-docker-commands)
+	- [🛠️ Build all the instances](#️🛠️-build-all-the-instances)
+	- [🛠️ Build a specific instances](#️🛠️-build-a-specific-instance)
+	- [🧹 Clear the instances](#🧹-clear-the-instances)
+	- [💻 Interact with an instance](#💻-interact-with-an-instance)
+	- [🛑 Stop a running instance](#🛑-stop-a-running-instance)
+- [🦔 Echidna](#🦔-echidna)
+</details>
+
+## 📜 Projects list
 
 - [TokenDistribution V1](TokenDistributionV1)
 
-## Get started
+## 📌 Requirements
 
-### Install Hardhat
+- Node.js
+- Hardhat
+- Docker
+- Echidna
 
-Install Node.js LTS:
+## 🔧 Setup
 
-```bash
-sudo apt update
-sudo apt install curl git
-curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-sudo apt-get install -y nodejs
-```
+1. Clone the repository:
 
-Create the project folder:
+	```bash
+	git clone --branch experimental https://github.com/ngi-indi/module-blockchain.git
+	```
 
-```bash
-mkdir hardhat-project
-cd hardhat-project
-```
+2. Install Node.js LST:
 
-Initialize a Node.js project:
+	```bash
+	sudo apt update
+	sudo apt install curl git
+	curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+	sudo apt-get install -y nodejs
+	```
 
-```bash
-npm init
-```
+3. Install the Node.js dependencies:
 
-Compile all the metadata forms related to the Hardhat project. \
-Download the Hardhat modules:
+	```
+	npm install
+	```
 
-```bash
-npm install --save-dev hardhat
-```
+4. Install Docker:
 
-### Create a Hardhat project
+	```bash
+	sudo apt update
+	sudo apt install apt-transport-https ca-certificates curl software-properties-common
+	curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+	sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
+	apt-cache policy docker-ce
+	sudo apt install docker-ce
 
-```bash
-npx hardhat init
-```
+	sudo apt  install docker-compose
+	```
 
-Create an empty project since the JavaScript and the TypeScript ones come with already existing contracts.
+5. Install Echidna:
 
-Download the toolbox module:
+	Download the latest version from Echidna's [GitHub releases page](https://github.com/crytic/echidna/releases). 
 
-```bash
-npm i @nomicfoundation/hardhat-toolbox
-```
+	Here, the version is ```2.2.3```:
 
-Create the essential project folders:
+	```bash
+	cd ~
+	wget https://github.com/crytic/echidna/releases/download/v2.2.3/echidna-2.2.3-x86_64-linux.tar.gz
+	```
 
-```bash
-mkdir contracts scripts test
-```
+	Extract the archive:
 
-The [```contracts```](contracts) folder will contain the Solidity contracts.\
-The [```scripts```](scripts) folder will contain the deployment scripts.\
-The [```test```](test) folder will contain the test scripts.
+	```bash
+	tar -xvf echidna-2.2.3-x86_64-linux.tar.gz
+	rm echidna-2.2.3-x86_64-linux.tar.gz
+	```
 
-Download the OpenZeppelin template contracts:
+	Move it to the programs folder:
 
-```bash
-npm i @openzeppelin/contracts
-```
+	```bash
+	sudo mv echidna /usr/local/bin/
+	```
 
-Modify the compiler version in the [```hardhat.config.js```](hardhat.config.js) file.
+	Install the ```crytic-compile``` and ```slither-analyzer``` libraries:
 
+	```bash
+	pip install crytic-compile
+	pip3 install slither-analyzer --user
+	```
 
-> [Configure TypeScript](https://hardhat.org/hardhat-runner/docs/guides/typescript) if needed.
+	Install a Solidity compiler specific version:
 
-### Install Docker
+	```bash
+	solc-select install 0.8.25
+	```
 
-```bash
-sudo apt update
-sudo apt install apt-transport-https ca-certificates curl software-properties-common
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
-apt-cache policy docker-ce
-sudo apt install docker-ce
+	In this example, the compiler version is ```0.8.25```.
 
-sudo apt  install docker-compose
-```
+## 🚧 Create a new Hardhat project
 
-### Install Echidna
+1. Create the project folder:
 
-Download the latest version from Echidna's [GitHub releases page](https://github.com/crytic/echidna/releases). 
+	```bash
+	mkdir hardhat-project
+	cd hardhat-project
+	```
 
-Here, the version is ```2.2.3```:
+2. Initialize a Node.js project:
 
-```bash
-cd ~
-wget https://github.com/crytic/echidna/releases/download/v2.2.3/echidna-2.2.3-x86_64-linux.tar.gz
-```
+	```bash
+	npm init
+	```
 
-Extract the archive:
+3. Fill all the metadata fields in.
 
-```bash
-tar -xvf echidna-2.2.3-x86_64-linux.tar.gz
-rm echidna-2.2.3-x86_64-linux.tar.gz
-```
+4. Download the Hardhat modules:
 
-Move it to the programs folder:
+	```bash
+	npm install --save-dev hardhat
+	```
 
-```bash
-sudo mv echidna /usr/local/bin/
-```
+5. Create the project:
 
-Install the ```crytic-compile``` and ```slither-analyzer``` libraries:
+	```bash
+	npx hardhat init
+	```
 
-```bash
-pip install crytic-compile
-pip3 install slither-analyzer --user
-```
+6. Select empty project since the JavaScript and the TypeScript ones come with already existing contracts.
 
-Install a Solidity compiler specific version:
+7. Download the toolbox module:
 
-```bash
-solc-select install 0.8.25
-```
+	```bash
+	npm i @nomicfoundation/hardhat-toolbox
+	```
 
-In this example, the compiler version is ```0.8.25```.
+8. Create the essential project folders:
 
-## Compile the contracts
+	```bash
+	mkdir contracts scripts test
+	```
 
-```bash
-npx hardhat compile
-```
+	The ```contracts``` folder will contain the Solidity contracts.\
+	The ```scripts``` folder will contain the deployment scripts.\
+	The ```test``` folder will contain the test scripts.
 
-This action generates the [```artifacts```](artifacts) folder.
+9. Download the OpenZeppelin template contracts:
 
-## Clear cache and compiled contracts files
+	```bash
+	npm i @openzeppelin/contracts
+	```
 
-```bash
-npx hardhat clean
-```
-
-## Unit and integration testing (Hardhat)
-
-The libraries used for testing the Solidity code are [```Mocha```](https://mochajs.org/) and [```Chai```](https://www.chaijs.com/). To install them run:
+10. Select a compiler version editing the ```hardhat.config.js``` file.
 
 
-```bash
-npm install --save-dev mocha chai
-```
+11. [```Configure TypeScript```](https://hardhat.org/hardhat-runner/docs/guides/typescript) if needed.
 
+12. Install the TypeScript libraries for testing:
+
+	```bash
+	npm install --save-dev mocha chai
+	```
+	
 <!-- 
 In case of "Error HH19"
 (Error HH19: Your project is an ESM project (you have "type": "module" set in your package.json) but your Hardhat config file uses the .js extension)
@@ -154,19 +181,31 @@ In case of "Error HH19"
 https://ethereum.stackexchange.com/a/158991
 -->
 
-To run the tests, execute:
+## 👷 Hardhat commands
+
+#### 🛠️ Compile the contracts
 
 ```bash
-npx hardhat test
+npx hardhat compile
 ```
 
-<!--
-Or, alternatively (if defined in package.json): 
+This action generates the [```artifacts```](artifacts) folder.
+
+#### 🧹 Clear cache and compiled contracts files
 
 ```bash
-npm run test:hardhat
+npx hardhat clean
 ```
--->
+
+#### ✅ Run the tests
+
+1. Place the TypeScript files in the ```test``` folder.
+
+2. Execute the tests:
+
+	```bash
+	npx hardhat test
+	```
 
 <!--
 Run tests on a specific network
@@ -178,72 +217,104 @@ npx hardhat test --network bnbTestnet
 Some testing features such as before(), beforeAll(), etc. do not work outside the Hardhat testnet...
 -->
 
-## Fuzz testing (Echidna) <!-- Property-based testing -->
+#### 🚀 Deploy a contract
 
-Before running the tests, make sure:
-- The Echidna npm script is defined in the ```package.json``` file.
-- The Echidna ```echidna.config.yaml``` configuration file exists and is correctly set.
-- The Solidity compiler versions are coherent and correct (in ```package.json```, ```echidna.config.yaml```, ```hardhat,config.ts```, the Solidity code, etc.)
+1. Define the network properties in the ```hardhat.config.ts```.
 
-To execute, run:
+	> Example where ```<networkName>``` is ```bnbTestnet```:
 
-```bash
-solc-select use 0.8.25 && echidna --contract Echidna<ContractName> echidna/Echidna<ContractName>.sol --config echidna/echidna.config.yaml
-``` 
-
-## Deploy the contract
-
-```bash
-npx hardhat run --network <networkName> scripts/deploy.ts
-```
-
-```<networkName>``` must be defined in the ```hardhat.config.ts``` file.
-
-### Example where ```<networkName>``` is ```bnbTestnet```
-
-```bash
-npx hardhat run --network bnbTestnet scripts/deploy.ts
-```
-
->```hardhat.config.ts```:
-
-```
-const config: HardhatUserConfig  = {
-	solidity: "0.8.25",
-  	networks: {
-		bnbTestnet: {
-			url: "https://bsc-testnet-dataseed.bnbchain.org",
-			chainId: 97,
-			gasPrice: 20000000000,
-			accounts: {mnemonic: mnemonic},
+	```ts
+	// hardhat.config.ts
+	const config: HardhatUserConfig  = {
+		solidity: "0.8.25",
+		networks: {
+			bnbTestnet: {
+				url: "https://bsc-testnet-dataseed.bnbchain.org",
+				chainId: 97,
+				gasPrice: 20000000000,
+				accounts: {mnemonic: mnemonic},
+			},
 		},
-	},
-	etherscan: {
-		apiKey: bscscanApiKey
-	}
-};
-```
+		etherscan: {
+			apiKey: bscscanApiKey
+		}
+	};
+	```
 
-## Interact with a deployed contract
+2. Place the TypeScript file in the ```scripts``` folder.
 
-```ts
-const contractName = "MyContract";
-const contractAddress = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2";
+3. Execute the deployment script:
 
-const myContract = await (await ethers.getContractFactory(contractName)).attach(contractAddress);
+	```bash
+	npx hardhat run --network <networkName> scripts/deploy.ts
+	```
 
-await myContract.myAction();
-```
+	> Example where ```<networkName>``` is ```bnbTestnet```:
 
-<!--
+	```bash
+	npx hardhat run --network bnbTestnet scripts/deploy.ts
+	```
+
+#### 💻 Interact with a deployed contract
+
+1. Define the network properties in the ```hardhat.config.ts```.
+
+	> Example where ```<networkName>``` is ```bnbTestnet```:
+
+	```ts
+	// hardhat.config.ts
+	const config: HardhatUserConfig  = {
+		solidity: "0.8.25",
+		networks: {
+			bnbTestnet: {
+				url: "https://bsc-testnet-dataseed.bnbchain.org",
+				chainId: 97,
+				gasPrice: 20000000000,
+				accounts: {mnemonic: mnemonic},
+			},
+		},
+		etherscan: {
+			apiKey: bscscanApiKey
+		}
+	};
+	```
+
+2. Place the TypeScript file in the ```scripts``` folder.
+
+	> Interaction code template: 
+
+	```ts
+	const contractName = "MyContract";
+	const contractAddress = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2";
+
+	const myContract = await (await ethers.getContractFactory(contractName)).attach(contractAddress);
+
+	await myContract.myAction();
+	```
+
+3. Execute the script:
+
+	```bash
+	npx hardhat run --network <networkName> scripts/interact.ts
+	```
+
+## 🐋 Docker commands
+
+#### 🛠️ Build all the instances:
+
 ```bash
-npx hardhat run --network <networkName> scripts/interact.ts
+sudo docker compose up --build
 ```
--->
 
-## Docker
+#### 🛠️ Build a specific instance 
 
-### Clean instances:
+```<MyInstance>``` must be declared in the ```compose.yaml``` file:
+
+```bash
+sudo docker compose up --build <MyInstance>
+```
+
+#### 🧹 Clear the instances:
 
 ```bash
 sudo docker compose rm -f
@@ -255,49 +326,45 @@ sudo docker system prune
 ```
 -->
 
-### Build all instances:
+#### 💻 Interact with an instance:
 
-```bash
-sudo docker compose up --build
-```
+1. Add the ```tty: true``` property to the instance's definition in the ```compose.yaml``` file.\
+	
+2. Run the instance:
 
-### Build a specific instance 
+	```bash
+	sudo docker compose up -d <MyInstance>
+	```
 
-In this example the instance name is ```<MyInstance>``` and it has to be declared in the ```compose.yaml``` file:
+3. In another shell, run:
 
-```bash
-sudo docker compose up --build <MyInstance>
-```
+	```bash
+	sudo docker ps
+	```
 
-### Interact with an instance:
+4. Copy the ```CONTAINER ID``` or ```NAMES``` values down.
 
-Add the 
+5. Execute:
 
-```
-tty: true
-```
+	```bash
+	sudo docker exec -it <CONTAINER ID> /bin/bash
+	```
 
-property to the instance's definition in the ```compose.yaml``` file.\
-Run the instance:
-
-```bash
-sudo docker compose up -d <MyInstance>
-```
-
-In another shell, run:
-
-```bash
-sudo docker ps
-```
-
-Copy the ```CONTAINER ID``` or ```NAMES``` values down and execute:
-
-```bash
-sudo docker exec -it <CONTAINER ID> /bin/bash
-```
-
-### Stop a running instance:
+#### 🛑 Stop a running instance:
 
 ```bash
 sudo docker stop <CONTAINER ID>
 ```
+
+## 🦔 Echidna
+
+1. 	Before running the tests, make sure:
+
+	- The Echidna ```echidna.config.yaml``` configuration file exists and it is correctly set.
+	- The Solidity compiler versions are coherent and correct (accross ```package.json```, ```echidna.config.yaml```, ```hardhat,config.ts```, the Solidity code, etc.)
+
+2. Start the fuzz testing:
+
+	```bash
+	solc-select use 0.8.25 && echidna --contract Echidna<ContractName> echidna/Echidna<ContractName>.sol --config echidna/echidna.config.yaml
+	```

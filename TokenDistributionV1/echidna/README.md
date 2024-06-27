@@ -1,6 +1,27 @@
-# TokenDistribution V1 Echidna
+# 🦔 TokenDistribution V1 Echidna
 
-## Properties 
+## 📕 Table of Contents
+
+<details open>
+<summary></summary>
+
+- [💾 Commands](#💾-commands)
+- [🟰 Properties](#🟰-properties)
+- [📝 Contracts](#📝-contracts)
+    - [🦔 echidnaRequestAmount](#🦔-echidnarequestamount)
+    - [🦔 echidnaRequestTimeout](#🦔-echidnarequesttimeout)
+    - [🦔 echidnaValidatorsThreshold](#🦔-echidnavalidatorsthreshold)
+</details>
+
+## 💾 Commands
+
+All the following commands must be executed at the [root](../) of the project.
+
+- ```npm run test:echidna``` -> Verifies all the properties with the real contract implementation on the host machine.
+
+- ```npm run docker:test:echidna``` -> Verifies all the properties with the real contract implementation on a Docker container.
+
+## 🟰 Properties 
 
 <!-- 
 - **echidnaAddresses**: the hooking of the contract is correctly performed hence Echidna has the correct addresses.
@@ -10,33 +31,33 @@
 
 - **echidnaRequestTimeout**: request status is not updated when a new request attempt is performed if the timeout has not yet been reached.
 
-- **echidnaValidatorsThreshold**: the number of approvals in a withdrawal request is never greater than the validators threshold. 
+- **echidnaValidatorsThreshold**: the number of approvals in a withdrawal request is never greater than the validators threshold.
 
-## Contracts
+## 📝 Contracts
 
-Each property but **echidnaAddresses** has its own folder containing itself with a modified version of the TokenDistribution contract to fail the assertion property.
+Each property has its own folder containing itself with a modified version of the TokenDistribution contract to fail the assertion property.
 
-### echidnaRequestAmount
+### 🦔 echidnaRequestAmount
 
-Original TokenDistribution contract:
-
-```solidity
-require(token.balanceOf(address(this)) >= _amount, "Contract has not enough tokens to cover this request!");
-```
-
-Modified contract:
-
-```solidity
-This line has been removed!
-```
-
-Command (needs to be launched at the [root](../) of the project):
+💾 Execute:
 
 ```bash
 solc-select use 0.8.25 && echidna --contract EchidnaRequestAmount echidna/echidnaRequestAmount/EchidnaRequestAmount.sol --config echidna/echidna.config.yaml
 ```
 
-Output:
+📄 Original TokenDistribution contract:
+
+```solidity
+require(token.balanceOf(address(this)) >= _amount, "Contract has not enough tokens to cover this request!");
+```
+
+🐛 Modified contract:
+
+```solidity
+This line has been removed!
+```
+
+🖨️ Output:
 
 ```
 assertion in echidnaRequestAmount(uint256): FAILED! with ErrorRevert
@@ -45,13 +66,19 @@ Call sequence:
 1. EchidnaRequestAmount.echidnaRequestAmount(62497009088297594416563199010816601639684591629213015536425786504559825832396)
 ```
 
-Comment: 
+🗣️ Comment: 
 
 Echidna called its own echidnaRequestAmount() method requesting a large value to withdraw; the request has been approved because the original contract's check is missing and the value of the current request is hence greater than the contract tokens balance which is zero  (obviously this would also have failed even with a smaller value).
 
-### echidnaRequestTimeout
+### 🦔 echidnaRequestTimeout
 
-Original TokenDistribution contract:
+💾 Execute:
+
+```bash
+solc-select use 0.8.25 && echidna --contract EchidnaRequestTimeout echidna/echidnaRequestTimeout/EchidnaRequestTimeout.sol --config echidna/echidna.config.yaml
+```
+
+📄 Original TokenDistribution contract:
 
 ```solidity
 if(block.number > currentRequest.blockNumber + timeout || currentRequest.blockNumber == 0)
@@ -67,7 +94,7 @@ else
 }
 ```
 
-Modified contract:
+🐛 Modified contract:
 
 ```solidity
 if(block.number < currentRequest.blockNumber + timeout || currentRequest.blockNumber == 0)
@@ -83,13 +110,7 @@ else
 }
 ```
 
-Command (needs to be launched at the [root](../) of the project):
-
-```bash
-solc-select use 0.8.25 && echidna --contract EchidnaRequestTimeout echidna/echidnaRequestTimeout/EchidnaRequestTimeout.sol --config echidna/echidna.config.yaml
-```
-
-Output:
+🖨️ Output:
 
 ```
 assertion in echidnaRequestTimeout(uint256): FAILED! with ErrorRevert
@@ -99,13 +120,19 @@ Call sequence:
 2. EchidnaRequestTimeout.echidnaRequestTimeout(1) Time delay: 255 seconds Block delay: 18
 ```
 
-Comment:
+🗣️ Comment:
 
 Echidna performed a request and after 18 blocks (hence when the request was not expireed yet), performed a newer one that modified the request status. This mean a bad request has been accepted by the modified contract. 
 
-### echidnaValidatorsThreshold
+### 🦔 echidnaValidatorsThreshold
 
-Original TokenDistribution contract:
+💾 Execute:
+
+```
+solc-select use 0.8.25 && echidna --contract EchidnaValidatorsThreshold echidna/echidnaValidatorsThreshold/EchidnaValidatorsThreshold.sol --config echidna/echidna.config.yaml
+```
+
+📄 Original TokenDistribution contract:
 
 ```solidity
 // In the constructor:
@@ -121,7 +148,7 @@ require(getNumberOfValidatorsInCurrentRequest() < validatorsThreshold, "Number o
 uint firstFreeIndex = validatorsThreshold;
 ```
 
-Modified contract:
+🐛 Modified contract:
 
 ```solidity
 // In the constructor:
@@ -137,14 +164,14 @@ This line has been removed!
 uint firstFreeIndex = currentRequest.approvalValidators.length;
 ```
 
-Original Echidna contract:
+🦔 Original Echidna contract:
 
 ```solidity
 uint constant VALIDATORS_THRESHOLD = 3;
 uint constant TIMEOUT = 110;
 ```
 
-Modified contract:
+🦔✏️ Modified Echidna contract:
 
 ```solidity
 // Less validators and more timeout to reduce Echidna's search space
@@ -152,13 +179,7 @@ uint constant VALIDATORS_THRESHOLD = 2;
 uint constant TIMEOUT = 1000;
 ```
 
-Command (needs to be launched at the [root](../) of the project):
-
-```
-solc-select use 0.8.25 && echidna --contract EchidnaValidatorsThreshold echidna/echidnaValidatorsThreshold/EchidnaValidatorsThreshold.sol --config echidna/echidna.config.yaml
-```
-
-Output:
+🖨️ Output:
 
 ```
 assertion in echidnaValidatorsThreshold(): FAILED! with ErrorRevert
@@ -174,15 +195,6 @@ Call sequence:
 8. EchidnaValidatorsThreshold.echidnaValidatorsThreshold() from: 0x0000000000000000000000000000000000020000 Time delay: 316801 seconds Block delay: 32331
 ```
 
-Comment:
+🗣️ Comment:
 
 With that call sequence, Echidna was able to approve the request with three validators and when Echidna called the assertion method, the number of approvals in the current request (3) was greater than the validators threshold (2).
-
-
-## Commands
-
-All the following commands must be executed at the [root](../) of the project.
-
-- ```npm run test:echidna``` -> Verifies all the properties with the real contract implementation on the host machine.
-
-- ```npm run docker:test:echidna``` -> Verifies all the properties with the real contract implementation on a Docker container.
