@@ -5,12 +5,12 @@
 <details open>
 <summary></summary>
 
-- [💾 Commands](#💾-commands)
-- [🟰 Properties](#🟰-properties)
-- [📝 Contracts](#📝-contracts)
-    - [🦔 echidnaRequestAmount](#🦔-echidnarequestamount)
-    - [🦔 echidnaRequestTimeout](#🦔-echidnarequesttimeout)
-    - [🦔 echidnaValidatorsThreshold](#🦔-echidnavalidatorsthreshold)
+- [💾 Commands](#-commands)
+- [🟰 Properties](#-properties)
+- [📝 Contracts](#-contracts)
+    - [🦔 echidnaRequestAmount](#-echidnarequestamount)
+    - [🦔 echidnaRequestTimeout](#-echidnarequesttimeout)
+    - [🦔 echidnaValidatorsThreshold](#-echidnavalidatorsthreshold)
 </details>
 
 ## 💾 Commands
