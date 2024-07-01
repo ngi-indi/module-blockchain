@@ -1,41 +1,41 @@
-# 🧪 module-blockchain (experimental)
+# module-blockchain (experimental)
 
 ## 📕 Table of Contents
 
 <details open>
 <summary></summary>
 
-- [📜 Projects list](#-projects-list)
-- [📌 Requirements](#-requirements)
-- [🔧 Setup](#-setup)
-- [🚧 Create a new Hardhat project](#-create-a-new-hardhat-project)
-- [👷 Hardhat commands](#-hardhat-commands)
-	- [🛠️ Compile the contracts ](#️-compile-the-contracts)
-	- [🧹 Clear cache and compiled contracts files](#-clear-cache-and-compiled-contracts-files)
-	- [✅ Run the tests](#-run-the-tests)
-	- [🚀 Deploy a contract](#-deploy-a-contract)
-	- [💻 Interact with a deployed contract](#-interact-with-a-deployed-contract)
-- [🐋 Docker commands](#-docker-commands)
-	- [🛠️ Build all the instances](#️-build-all-the-instances)
-	- [🛠️ Build a specific instances](#️-build-a-specific-instance)
-	- [🧹 Clear the instances](#-clear-the-instances)
-	- [💻 Interact with an instance](#-interact-with-an-instance)
-	- [🛑 Stop a running instance](#-stop-a-running-instance)
-- [🦔 Echidna](#-echidna)
+- [Projects list](#projects-list)
+- [Requirements](#requirements)
+- [Setup](#setup)
+- [Create a new Hardhat project](#create-a-new-hardhat-project)
+- [Hardhat commands](#hardhat-commands)
+	- [Compile the contracts ](#️compile-the-contracts)
+	- [Clear cache and compiled contracts files](#clear-cache-and-compiled-contracts-files)
+	- [Run the tests](#run-the-tests)
+	- [Deploy a contract](#deploy-a-contract)
+	- [Interact with a deployed contract](#interact-with-a-deployed-contract)
+- [Docker commands](#docker-commands)
+	- [Build all the instances](#️build-all-the-instances)
+	- [Build a specific instance](#build-a-specific-instance)
+	- [Clear the instances](#clear-the-instances)
+	- [Interact with an instance](#interact-with-an-instance)
+	- [Stop a running instance](#stop-a-running-instance)
+- [Echidna](#echidna)
 </details>
 
-## 📜 Projects list
+## Projects list
 
 - [TokenDistribution V1](TokenDistributionV1)
 
-## 📌 Requirements
+## Requirements
 
 - Node.js
 - Hardhat
 - Docker
 - Echidna
 
-## 🔧 Setup
+## Setup
 
 1. Clone the repository:
 
@@ -110,7 +110,7 @@
 
 	In this example, the compiler version is ```0.8.25```.
 
-## 🚧 Create a new Hardhat project
+## Create a new Hardhat project
 
 1. Create the project folder:
 
@@ -181,9 +181,9 @@ In case of "Error HH19"
 https://ethereum.stackexchange.com/a/158991
 -->
 
-## 👷 Hardhat commands
+## Hardhat commands
 
-#### 🛠️ Compile the contracts
+#### Compile the contracts
 
 ```bash
 npx hardhat compile
@@ -191,13 +191,13 @@ npx hardhat compile
 
 This action generates the [```artifacts```](artifacts) folder.
 
-#### 🧹 Clear cache and compiled contracts files
+#### Clear cache and compiled contracts files
 
 ```bash
 npx hardhat clean
 ```
 
-#### ✅ Run the tests
+#### Run the tests
 
 1. Place the TypeScript files in the ```test``` folder.
 
@@ -217,7 +217,7 @@ npx hardhat test --network bnbTestnet
 Some testing features such as before(), beforeAll(), etc. do not work outside the Hardhat testnet...
 -->
 
-#### 🚀 Deploy a contract
+#### Deploy a contract
 
 1. Define the network properties in the ```hardhat.config.ts```.
 
@@ -255,7 +255,7 @@ Some testing features such as before(), beforeAll(), etc. do not work outside th
 	npx hardhat run --network bnbTestnet scripts/deploy.ts
 	```
 
-#### 💻 Interact with a deployed contract
+#### Interact with a deployed contract
 
 1. Define the network properties in the ```hardhat.config.ts```.
 
@@ -298,15 +298,15 @@ Some testing features such as before(), beforeAll(), etc. do not work outside th
 	npx hardhat run --network <networkName> scripts/interact.ts
 	```
 
-## 🐋 Docker commands
+## Docker commands
 
-#### 🛠️ Build all the instances:
+#### Build all the instances
 
 ```bash
 sudo docker compose up --build
 ```
 
-#### 🛠️ Build a specific instance 
+#### Build a specific instance 
 
 ```<MyInstance>``` must be declared in the ```compose.yaml``` file:
 
@@ -314,7 +314,7 @@ sudo docker compose up --build
 sudo docker compose up --build <MyInstance>
 ```
 
-#### 🧹 Clear the instances:
+#### Clear the instances
 
 ```bash
 sudo docker compose rm -f
@@ -326,7 +326,7 @@ sudo docker system prune
 ```
 -->
 
-#### 💻 Interact with an instance:
+#### Interact with an instance
 
 1. Add the ```tty: true``` property to the instance's definition in the ```compose.yaml``` file.\
 	
@@ -350,13 +350,13 @@ sudo docker system prune
 	sudo docker exec -it <CONTAINER ID> /bin/bash
 	```
 
-#### 🛑 Stop a running instance:
+#### Stop a running instance
 
 ```bash
 sudo docker stop <CONTAINER ID>
 ```
 
-## 🦔 Echidna
+## Echidna
 
 1. 	Before running the tests, make sure:
 

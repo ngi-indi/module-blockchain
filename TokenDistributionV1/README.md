@@ -1,4 +1,4 @@
-# 📝 TokenDistribution V1
+# TokenDistribution V1
 
 
 ## 📕 Table of Contents
@@ -6,28 +6,28 @@
 <details open>
 <summary></summary>
 
-- [📝 Specification](#-specification)
-- [💾 Commands](#-commands)
-    - [💷 Generate a wallet](#-generate-a-wallet)
-    - [🚀 Deploy](#-deploy)
-    - [🐋 Docker instances management](#-docker-instances-management)
-    - [✅ Testing](#-testing)
-- [🐋 An execution trace with Docker](#-an-execution-trace-with-docker)
-    - [🌳 Environment](#-environment)
-    - [👤 Participants](#-participants)
-    - [🚀 Deployment](#-deployment)
-    - [💻 Sessions](#-sessions)
-    - [✅ Check contracts status](#-check-contracts-status)
-    - [🪙 ERC-20 management](#-erc-20-management)
-    - [💼 Add validators](#-add-validators)
-    - [🏦 Deposit](#-deposit)
-    - [❓ Withdrawal request](#-withdrawal-request)
-    - [👌 Approve the request](#-approve-the-request)
-    - [💰 Withdraw](#-withdraw)
-- [🦔 Echidna](./echidna/)
+- [Specification](#specification)
+- [Commands](#commands)
+    - [Generate a wallet](#generate-a-wallet)
+    - [Deploy](#deploy)
+    - [Docker instances management](#docker-instances-management)
+    - [Testing](#-testing)
+- [An execution trace with Docker](#an-execution-trace-with-docker)
+    - [Environment](#environment)
+    - [Participants](#participants)
+    - [Deployment](#deployment)
+    - [Sessions](#sessions)
+    - [Check contracts status](#check-contracts-status)
+    - [ERC-20 management](#erc-20-management)
+    - [Add validators](#add-validators)
+    - [Deposit](#deposit)
+    - [Withdrawal request](#withdrawal-request)
+    - [Approve the request](#approve-the-request)
+    - [Withdraw](#withdraw)
+- [Echidna](./echidna/)
 </details>
 
-## 📝 Specification
+## Specification
 
 The Token Distribution contract involves a user and a set of validators.
 The contract ensures that a user can withdraw a required amount of tokens only if the transfer is approved by a specified number of validators.
@@ -45,25 +45,25 @@ After the creation, the contract supports the following actions:
 - **approve**: a validator can vote for the withdrawal request;
 - **withdraw**: if the withdraw request is approved, this action transfers the tokens to the recipient.
 
-## 💾 Commands
+## Commands
 
 The following commands are defined in the [```package.json```](./package.json) file.
 
 **⚠️ README**: All the commands require a wallet passphrase defined in the environment as ```$PRIVATE_KEY```.
 
-#### 💷 Generate a wallet
+#### Generate a wallet
 
 - ```npm run generate-wallet```\
 Prints a new generated [```HDNodeWallet```](https://docs.ethers.org/v6-beta/api/wallet/#HDNodeWallet).
 
-#### 🚀 Deploy
+#### Deploy
 
 - ```npm run deploy <networkName>```\
 Deploys the contracts into the ```<networkName>``` network.\
 ```<networkName>``` must be a valid network name specified in the [```hardhat.config.ts```](./hardhat.config.ts) file. \
 Example: ```npm run deploy bnbTestnet```
 
-#### 🐋 Docker instances management
+#### Docker instances management
 
 - ```npm run docker:instance <name>```\
 Runs a Docker container interactable (tty) instance with a specified ```<name>```.\
@@ -76,7 +76,7 @@ Removes all the Docker cached instances.
 - ```npm run docker:clear-all```\
 Similar to ```npm run docker:clear``` but more aggressive. It prunes all the local Docker images.
 
-#### ✅ Testing
+#### Testing
 
 - ```npm run test:hardhat```\
 Runs all the unit test within hardhat.
@@ -90,9 +90,9 @@ Launches Echidna to fuzz test the contracts.
 - ```npm run docker:test:echidna```\
 Launches Echidna to fuzz test the contracts in a Docker container.
 
-## 🐋 An execution trace with Docker
+## An execution trace with Docker
 
-1. ### 🌳 Environment
+1. ### Environment
 
     In this execution scenario, we will deploy the IndiToken and the  TokenDistribution contracts on the BNB Smart Chain testnet by using Docker. \
     Each participant will have their own Docker instance and passphrase, as specified in the Docker [```compose.yaml```](compose.yaml) configuration file. \
@@ -108,7 +108,7 @@ Launches Echidna to fuzz test the contracts in a Docker container.
     PRIVATE_KEY_5="again cant you see I ve waited long enough where do I"
     ```
 
-2. ### 👤 Participants
+2. ### Participants
 
     | Address | Role  |
     |-------------------------------------------------------------------------------------------------------------------------------|-----------|
@@ -120,7 +120,7 @@ Launches Echidna to fuzz test the contracts in a Docker container.
 
 
 
-3. ### 🚀 Deployment
+3. ### Deployment
 
     Run a Docker instance for the owner (whose passphrase is ```$PRIVATE_KEY_1```):
 
@@ -239,7 +239,7 @@ Launches Echidna to fuzz test the contracts in a Docker container.
     npm run docker:clear-all
     ```
 
-4. ### 💻 Sessions
+4. ### Sessions
 
     Open 5 new terminals at the root of the project. In each console, launch the corresponding container for the current participant: 
 
@@ -283,7 +283,7 @@ Launches Echidna to fuzz test the contracts in a Docker container.
     cat deployment.json
     ```
 
-5. ### ✅ Check contracts status
+5. ### Check contracts status
 
     Before interacting with the TokenDistribution contract, let's call the [```check-status.ts```](./scripts/check-status.ts) script from any instance to make sure the contract is alive and responding to our getter requests:
 
@@ -301,7 +301,7 @@ Launches Echidna to fuzz test the contracts in a Docker container.
     >Validators in current request: 0 \
     >Block number in current request: 0
 
-6. ### 🪙 ERC-20 management
+6. ### ERC-20 management
 
     From the owner instance, run the [```erc20.ts```](./scripts/erc20.ts) script responsible for minting the tokens and call the ERC20 approve method for the contract address.
 
@@ -314,7 +314,7 @@ Launches Echidna to fuzz test the contracts in a Docker container.
     >Mint tx hash:  [0x0c4dc37a0181e3d489e54f40de95ea1ab64f8d74564eb5380da3ca1ebc593f6d](https://testnet.bscscan.com/tx/0x0c4dc37a0181e3d489e54f40de95ea1ab64f8d74564eb5380da3ca1ebc593f6d) \
     >Approve tx hash:  [0xf5ffd35ff915e1059fc4352e37d1d3f561b1c631cd17c65d1db3855393fcce0d](https://testnet.bscscan.com/tx/0xf5ffd35ff915e1059fc4352e37d1d3f561b1c631cd17c65d1db3855393fcce0d)
 
-7. ### 💼 Add validators
+7. ### Add validators
 
     We add three validator addresses to our contract:
 
@@ -348,7 +348,7 @@ Launches Echidna to fuzz test the contracts in a Docker container.
     >Add validator [0xa29E7a55f24E477D8ea204862CbFf44D0a0913da](https://testnet.bscscan.com/address/0xa29E7a55f24E477D8ea204862CbFf44D0a0913da) tx hash: [0x2ecfa4af5c40839c44b74881d6559f1731cbc916f877e7937df4d537ec8c266f](https://testnet.bscscan.com/tx/0x2ecfa4af5c40839c44b74881d6559f1731cbc916f877e7937df4d537ec8c266f)
 
 
-8. ### 🏦 Deposit
+8. ### Deposit
 
     From the owner instance, fund the contract by running the [```deposit.ts```](./scripts/deposit.ts) script:
 
@@ -361,7 +361,7 @@ Launches Echidna to fuzz test the contracts in a Docker container.
     >Deposit tx hash:  [0x61cf853c7df29c81794a0ab37e1d1b9a8da6006e02da144f1a4408be0cfa9f89](https://testnet.bscscan.com/tx/0x61cf853c7df29c81794a0ab37e1d1b9a8da6006e02da144f1a4408be0cfa9f89)
 
 
-9. ### ❓ Withdrawal request
+9. ### Withdrawal request
 
     From the recipient instance, peform a withdrawal request by running the [```request.ts```](./scripts/request.ts) script: 
 
@@ -374,7 +374,7 @@ Launches Echidna to fuzz test the contracts in a Docker container.
     >Request tx hash:  [0x38800078a30633ae2d23689937de1429dd01176f372a8309958d4edff89f1517](https://testnet.bscscan.com/tx/0x38800078a30633ae2d23689937de1429dd01176f372a8309958d4edff89f1517)
 
 
-10. ### 👌 Approve the request
+10. ### Approve the request
 
     From each validators console, execute the [```approve.ts```](./scripts/approve.ts) script:
 
@@ -388,7 +388,7 @@ Launches Echidna to fuzz test the contracts in a Docker container.
     >Validator [0x5af498d1f321F811c27baba59F0E97152986d356](https://testnet.bscscan.com/address/0x5af498d1f321F811c27baba59F0E97152986d356), approve tx hash: [0x5155b38a91eaa7098aa593c84c0b32205c78a2e097d6bea475ac8a889e1073c0](https://testnet.bscscan.com/tx/0x5155b38a91eaa7098aa593c84c0b32205c78a2e097d6bea475ac8a889e1073c0)\
     >Validator [0xa29E7a55f24E477D8ea204862CbFf44D0a0913da](https://testnet.bscscan.com/address/0xa29E7a55f24E477D8ea204862CbFf44D0a0913da), approve tx hash: [0x889a233d3d8f423a58e219998779aa06d5a06521f642389684410e32ab16be45](https://testnet.bscscan.com/tx/0x889a233d3d8f423a58e219998779aa06d5a06521f642389684410e32ab16be45)
 
-11. ### 💰 Withdraw
+11. ### Withdraw
 
     Finally, the recipient performs the withdraw from the corresponding console running: 
 
