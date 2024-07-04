@@ -361,7 +361,7 @@ sudo docker stop <CONTAINER ID>
 1. 	Before running the tests, make sure:
 
 	- The Echidna ```echidna.config.yaml``` configuration file exists and it is correctly set.
-	- The Solidity compiler versions are coherent and correct (accross ```package.json```, ```echidna.config.yaml```, ```hardhat,config.ts```, the Solidity code, etc.)
+	- The Solidity compiler versions are coherent and correct (accross ```package.json```, ```echidna.config.yaml```, ```hardhat.config.ts```, the Solidity code, etc.)
 
 2. Start the fuzz testing:
 
