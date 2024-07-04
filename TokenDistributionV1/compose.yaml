@@ -29,6 +29,15 @@ services:
     environment:
       - PRIVATE_KEY=${PRIVATE_KEY_5}
 
+  test-confuzzius:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - INSTALL_CONFUZZIUS=true
+        - INSTALL_PIP=true
+    tty: true
+
   test-echidna:
     build: 
       context: .

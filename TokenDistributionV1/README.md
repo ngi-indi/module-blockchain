@@ -90,6 +90,9 @@ Launches Echidna to fuzz test the contracts.
 - ```npm run docker:test:echidna```\
 Launches Echidna to fuzz test the contracts in a Docker container.
 
+- ```npm run docker:test:confuzzius```\
+Launches ConFuzzius to fuzz test the contracts in a Docker container.
+
 ## An execution trace with Docker
 
 1. ### Environment
