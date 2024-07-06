@@ -32,10 +32,7 @@ services:
   test-confuzzius:
     build: 
       context: .
-      dockerfile: Dockerfile
-      args:
-        - INSTALL_CONFUZZIUS=true
-        - INSTALL_PIP=true
+      dockerfile: ./confuzzius/Dockerfile
     tty: true
 
   test-echidna:
