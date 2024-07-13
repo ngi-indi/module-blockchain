@@ -29,12 +29,6 @@ services:
     environment:
       - PRIVATE_KEY=${PRIVATE_KEY_5}
 
-  test-confuzzius:
-    build: 
-      context: .
-      dockerfile: ./confuzzius/Dockerfile
-    tty: true
-
   test-echidna:
     build: 
       context: .
