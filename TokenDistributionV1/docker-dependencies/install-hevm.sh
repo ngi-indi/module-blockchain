@@ -26,10 +26,11 @@ chmod +x ./hevm-x86_64-linux
 
 # Move the contracts to the folder
 cd ..
-mv ./contracts/TokenDistribution.sol ./hevm-test/TokenDistribution.sol
-mv ./contracts/IndiToken.sol ./hevm-test/IndiToken.sol
+mv ./contracts/TokenDistribution.sol ./hevm-test/src/TokenDistribution.sol
+mv ./contracts/IndiToken.sol ./hevm-test/src/IndiToken.sol
+mkdir ./hevm-test/\@openzeppelin
+mv ./node_modules/\@openzeppelin/contracts ./hevm-test/\@openzeppelin/contracts
 
 # Compile the contracts
 cd hevm-test
 forge build
-

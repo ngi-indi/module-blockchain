@@ -90,6 +90,23 @@ Launches Echidna to fuzz test the contracts.
 - ```npm run docker:test:echidna```\
 Launches Echidna to fuzz test the contracts in a Docker container.
 
+- ```npm run docker:test:hevm```\
+Launches hevm to perform a symbolic analysis within a Docker container. \
+Similarly to the [Docker instances](#environment), it requires an ```.env``` file containing a git email and username, formatted like this: 
+
+```
+GIT_EMAIL="name@example.com"
+GIT_USERNAME="name"
+```
+
+Inside the instance, run these commands:
+
+```bash
+cd hevm-test 
+export CODE=$(jq -r '.bytecode.object' out/TokenDistribution.sol/TokenDistribution.json)
+./hevm-x86_64-linux symbolic --code $CODE
+```
+
 ## An execution trace with Docker
 
 1. ### Environment

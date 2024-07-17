@@ -13,3 +13,6 @@ else
 fi
 
 sudo docker exec -it tokendistributionv1-test-hevm-1 /bin/bash
+
+# Execute this:
+# cd hevm-test && export CODE=$(jq -r '.bytecode.object' out/TokenDistribution.sol/TokenDistribution.json) && ./hevm-x86_64-linux symbolic --code $CODE
