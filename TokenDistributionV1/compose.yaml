@@ -38,6 +38,14 @@ services:
         - INSTALL_PIP=true
     tty: true
 
+  test-hevm:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - INSTALL_HEVM=true
+    tty: true
+
   test-hardhat:
     build: .
     tty: true

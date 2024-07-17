@@ -13,8 +13,8 @@
     "docker:stop-all": "sudo docker rm -vf $(docker ps -aq)",
     "docker:instance": "bash ./scripts/docker/launch-instance.sh",
     "docker:test:echidna": "bash ./scripts/docker/test-echidna.sh",
-    "docker:test:hardhat": "bash ./scripts/docker/test-hardhat.sh"
-
+    "docker:test:hardhat": "bash ./scripts/docker/test-hardhat.sh",
+    "docker:test:hevm": "bash ./scripts/docker/test-hevm.sh"
   },
   "repository": {
     "type": "git",

@@ -16,9 +16,12 @@ COPY . .
 # Build arguments (default value is false if not overwritten by the compose.yaml file):
 ARG INSTALL_PIP=false
 ARG INSTALL_ECHIDNA=false
+ARG INSTALL_HEVM=false
 
 # Install external dependencies
 RUN chmod +x ./docker-dependencies/install-*.sh
 RUN ./docker-dependencies/install-apt.sh
+
 RUN if [ $INSTALL_PIP = true ]; then ./docker-dependencies/install-pip.sh; fi
 RUN if [ $INSTALL_ECHIDNA = true ]; then ./docker-dependencies/install-echidna.sh; fi
+RUN if [ $INSTALL_HEVM = true ]; then ./docker-dependencies/install-hevm.sh; fi
