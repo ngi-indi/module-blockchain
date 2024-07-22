@@ -7,21 +7,32 @@
 
 - [Projects list](#projects-list)
 - [Requirements](#requirements)
-- [Setup](#setup)
-- [Create a new Hardhat project](#create-a-new-hardhat-project)
-- [Hardhat commands](#hardhat-commands)
-	- [Compile the contracts ](#️compile-the-contracts)
-	- [Clear cache and compiled contracts files](#clear-cache-and-compiled-contracts-files)
-	- [Run the tests](#run-the-tests)
-	- [Deploy a contract](#deploy-a-contract)
-	- [Interact with a deployed contract](#interact-with-a-deployed-contract)
-- [Docker commands](#docker-commands)
-	- [Build all the instances](#️build-all-the-instances)
-	- [Build a specific instance](#build-a-specific-instance)
-	- [Clear the instances](#clear-the-instances)
-	- [Interact with an instance](#interact-with-an-instance)
-	- [Stop a running instance](#stop-a-running-instance)
-- [Echidna](#echidna)
+
+	<details open>
+	<summary><b>Development and testing</b></summary>
+
+	- [Setup](#setup)
+	- [Create a new Hardhat project](#create-a-new-hardhat-project)
+	- [Hardhat commands](#hardhat-commands)
+		- [Compile the contracts ](#️compile-the-contracts)
+		- [Clear cache and compiled contracts files](#clear-cache-and-compiled-contracts-files)
+		- [Run the tests](#run-the-tests)
+		- [Deploy a contract](#deploy-a-contract)
+		- [Interact with a deployed contract](#interact-with-a-deployed-contract)
+	- [Echidna](#echidna)	
+	</details>
+
+	<details open>
+	<summary><b>Usage</b></summary>
+
+	- [Docker commands](#docker-commands)
+		- [Build all the instances](#️build-all-the-instances)
+		- [Build a specific instance](#build-a-specific-instance)
+		- [Clear the instances](#clear-the-instances)
+		- [Interact with an instance](#interact-with-an-instance)
+		- [Stop a running instance](#stop-a-running-instance)
+	</details>
+	
 </details>
 
 ## Projects list
@@ -298,6 +309,19 @@ Some testing features such as before(), beforeAll(), etc. do not work outside th
 	npx hardhat run --network <networkName> scripts/interact.ts
 	```
 
+## Echidna
+
+1. 	Before running the tests, make sure:
+
+	- The Echidna ```echidna.config.yaml``` configuration file exists and it is correctly set.
+	- The Solidity compiler versions are coherent and correct (accross ```package.json```, ```echidna.config.yaml```, ```hardhat.config.ts```, the Solidity code, etc.)
+
+2. Start the fuzz testing:
+
+	```bash
+	solc-select use 0.8.25 && echidna --contract Echidna<ContractName> echidna/Echidna<ContractName>.sol --config echidna/echidna.config.yaml
+	```
+
 ## Docker commands
 
 #### Build all the instances
@@ -355,16 +379,3 @@ sudo docker system prune
 ```bash
 sudo docker stop <CONTAINER ID>
 ```
-
-## Echidna
-
-1. 	Before running the tests, make sure:
-
-	- The Echidna ```echidna.config.yaml``` configuration file exists and it is correctly set.
-	- The Solidity compiler versions are coherent and correct (accross ```package.json```, ```echidna.config.yaml```, ```hardhat.config.ts```, the Solidity code, etc.)
-
-2. Start the fuzz testing:
-
-	```bash
-	solc-select use 0.8.25 && echidna --contract Echidna<ContractName> echidna/Echidna<ContractName>.sol --config echidna/echidna.config.yaml
-	```

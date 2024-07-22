@@ -8,10 +8,24 @@
 
 - [Specification](#specification)
 - [Commands](#commands)
+    <details open>
+    <summary><b>Development and testing</b></summary>
+
     - [Generate a wallet](#generate-a-wallet)
     - [Deploy](#deploy)
-    - [Docker instances management](#docker-instances-management)
     - [Testing](#-testing)
+    - [Echidna's folder](./echidna/)
+    </details>
+
+    <details open>
+    <summary><b>Usage</b></summary>
+    
+    - [Docker instances management](#docker-instances-management)
+    </details>
+
+<details open>
+<summary><b>Usage</b></summary>
+
 - [An execution trace with Docker](#an-execution-trace-with-docker)
     - [Environment](#environment)
     - [Participants](#participants)
@@ -24,7 +38,8 @@
     - [Withdrawal request](#withdrawal-request)
     - [Approve the request](#approve-the-request)
     - [Withdraw](#withdraw)
-- [Echidna](./echidna/)
+</details>
+
 </details>
 
 ## Specification
@@ -63,19 +78,6 @@ Deploys the contracts into the ```<networkName>``` network.\
 ```<networkName>``` must be a valid network name specified in the [```hardhat.config.ts```](./hardhat.config.ts) file. \
 Example: ```npm run deploy bnbTestnet```
 
-#### Docker instances management
-
-- ```npm run docker:instance <name>```\
-Runs a Docker container interactable (tty) instance with a specified ```<name>```.\
-```<name>``` must be a valid participant name specified in the [```compose.yaml```](./compose.yaml) file. \
-Example: ```npm run docker:instance owner```
-
-- ```npm run docker:clear```\
-Removes all the Docker cached instances.
-
-- ```npm run docker:clear-all```\
-Similar to ```npm run docker:clear``` but more aggressive. It prunes all the local Docker images.
-
 #### Testing
 
 - ```npm run test:hardhat```\
@@ -106,6 +108,19 @@ cd hevm-test
 export CODE=$(jq -r '.bytecode.object' out/TokenDistribution.sol/TokenDistribution.json)
 ./hevm-x86_64-linux symbolic --code $CODE
 ```
+
+#### Docker instances management
+
+- ```npm run docker:instance <name>```\
+Runs a Docker container interactable (tty) instance with a specified ```<name>```.\
+```<name>``` must be a valid participant name specified in the [```compose.yaml```](./compose.yaml) file. \
+Example: ```npm run docker:instance owner```
+
+- ```npm run docker:clear```\
+Removes all the Docker cached instances.
+
+- ```npm run docker:clear-all```\
+Similar to ```npm run docker:clear``` but more aggressive. It prunes all the local Docker images.
 
 ## An execution trace with Docker
 
