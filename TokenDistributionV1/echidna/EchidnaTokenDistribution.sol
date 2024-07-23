@@ -73,7 +73,7 @@ contract EchidnaTokenDistribution is TokenDistribution
     
     /*
     // This function has been commented out since it needs to be executed once during project's lifespan
-    // (Otherwise these function calls steal resources for the other asserts)
+    // (Otherwise these function calls steal resources to the other asserts)
 
     function echidnaAddresses() public {
         emit Debug("Echidna caller: ", echidna_caller);
@@ -87,7 +87,7 @@ contract EchidnaTokenDistribution is TokenDistribution
     }
     */
 
-    function echidnaRequestAmount(uint _amount) public {
+    function requestAmountLTEcontractBalance(uint _amount) public {
         // Perform a request
         request(_amount);
 
@@ -96,7 +96,7 @@ contract EchidnaTokenDistribution is TokenDistribution
     }
 
 
-    function echidnaRequestTimeout(uint _amount) public {
+    function preventNewRequestsBeforeTimeout(uint _amount) public {
         //  block number of the current request before a newer one
         uint lastRequestTime = this.getBlockNumberInCurrentRequest();
 
@@ -110,7 +110,7 @@ contract EchidnaTokenDistribution is TokenDistribution
         }
     }
 
-    function echidnaValidatorsThreshold() public {
+    function numberOfValidatorsLTEthreshold() public {
         assert(this.getNumberOfValidatorsInCurrentRequest() <= VALIDATORS_THRESHOLD);
     }
 

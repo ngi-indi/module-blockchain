@@ -4,7 +4,7 @@ pragma solidity ^0.8.1; // current version at the time of writing: 0.8.25+commit
 import "../../contracts/IndiToken.sol";
 import "./TokenDistributionBugged.sol";
 
-contract EchidnaRequestAmount is TokenDistributionBugged
+contract EchidnaTokenDistribution_1 is TokenDistributionBugged
 {
     // -----------------------------------------------------------
     // Echidna addresses
@@ -71,7 +71,7 @@ contract EchidnaRequestAmount is TokenDistributionBugged
     // Assertions
     // -----------------------------------------------------------
     
-    function echidnaRequestAmount(uint _amount) public {
+    function requestAmountLTEcontractBalance(uint _amount) public {
         // Perform a request
         request(_amount);
 

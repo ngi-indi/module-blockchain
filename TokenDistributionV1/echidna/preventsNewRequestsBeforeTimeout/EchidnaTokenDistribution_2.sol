@@ -4,7 +4,7 @@ pragma solidity ^0.8.1; // current version at the time of writing: 0.8.25+commit
 import "../../contracts/IndiToken.sol";
 import "./TokenDistributionBugged.sol";
 
-contract EchidnaValidatorsThreshold is TokenDistributionBugged
+contract EchidnaTokenDistribution_2 is TokenDistributionBugged
 {
     // -----------------------------------------------------------
     // Echidna addresses
@@ -30,8 +30,8 @@ contract EchidnaValidatorsThreshold is TokenDistributionBugged
     IndiToken indiToken = new IndiToken();
     
     address payable constant RECIPIENT = payable(ECHIDNA_ADDRESS_2);
-    uint constant VALIDATORS_THRESHOLD = 2;
-    uint constant TIMEOUT = 1000;
+    uint constant VALIDATORS_THRESHOLD = 3;
+    uint constant TIMEOUT = 110;
     uint constant MINT_AMOUNT = 20_000;
 
     // -----------------------------------------------------------
@@ -71,8 +71,18 @@ contract EchidnaValidatorsThreshold is TokenDistributionBugged
     // Assertions
     // -----------------------------------------------------------
 
-    function echidnaValidatorsThreshold() public {
-        assert(this.getNumberOfValidatorsInCurrentRequest() <= VALIDATORS_THRESHOLD);
+    function preventsNewRequestsBeforeTimeout(uint _amount) public {
+        //  block number of the current request before a newer one
+        uint lastRequestTime = this.getBlockNumberInCurrentRequest();
+
+        // If the request has not yet expireed
+        if(block.number <= lastRequestTime + TIMEOUT) {
+            // Perform a new request
+            request(_amount);
+
+            // The request block number should not change (i.e. the request() has failed)
+            assert(this.getBlockNumberInCurrentRequest() == lastRequestTime);
+        }
     }
 
     // -----------------------------------------------------------

@@ -8,9 +8,9 @@
 - [Commands](#commands)
 - [Properties](#properties)
 - [Contracts](#contracts)
-    - [echidnaRequestAmount](#echidnarequestamount)
-    - [echidnaRequestTimeout](#echidnarequesttimeout)
-    - [echidnaValidatorsThreshold](#echidnavalidatorsthreshold)
+    - [EchidnaTokenDistribution_1](#echidnatokendistribution_1-for-property-1-requestamountltecontractbalance)
+    - [EchidnaTokenDistribution_2](#echidnatokendistribution_2-for-property-2-preventsnewrequestsbeforetimeout)
+    - [EchidnaTokenDistribution_3](#echidnatokendistribution_3-for-property-3-numberofvalidatorsltethreshold)
 </details>
 
 ## Commands
@@ -24,25 +24,25 @@ All the following commands must be executed at the [root](../) of the project.
 ## Properties 
 
 <!-- 
-- **echidnaAddresses**: the hooking of the contract is correctly performed hence Echidna has the correct addresses.
+- 00: **echidnaAddresses**: the hooking of the contract is correctly performed hence Echidna has the correct addresses.
 -->
 
-- **echidnaRequestAmount**: when a withdrawal request is accepted, the contract should always have the token balance to satisfy it.
+1.  **requestAmountLTEcontractBalance**: when a withdrawal request is accepted, the contract should always have the token balance to satisfy it.
 
-- **echidnaRequestTimeout**: request status is not updated when a new request attempt is performed if the timeout has not yet been reached.
+2. **preventsNewRequestsBeforeTimeout**: request status is not updated when a new request attempt is performed if the timeout has not been reached yet.
 
-- **echidnaValidatorsThreshold**: the number of approvals in a withdrawal request is never greater than the validators threshold.
+3. **numberOfValidatorsLTEthreshold**: the number of approvals in a withdrawal request is never greater than the validators threshold.
 
 ## Contracts
 
 Each property has its own folder containing itself with a modified version of the TokenDistribution contract to fail the assertion property.
 
-### echidnaRequestAmount
+### EchidnaTokenDistribution_1 for property 1: requestAmountLTEcontractBalance
 
 Execute:
 
 ```bash
-solc-select use 0.8.25 && echidna --contract EchidnaRequestAmount echidna/echidnaRequestAmount/EchidnaRequestAmount.sol --config echidna/echidna.config.yaml
+solc-select use 0.8.25 && echidna --contract EchidnaTokenDistribution_1 echidna/requestAmountLTEcontractBalance/EchidnaTokenDistribution_1.sol --config echidna/echidna.config.yaml
 ```
 
 Original TokenDistribution contract:
@@ -63,19 +63,21 @@ Output:
 assertion in echidnaRequestAmount(uint256): FAILED! with ErrorRevert
 
 Call sequence:
-1. EchidnaRequestAmount.echidnaRequestAmount(62497009088297594416563199010816601639684591629213015536425786504559825832396)
+requestAmountLTEcontractBalance(uint256): failed!💥
+  Call sequence:
+    EchidnaTokenDistribution_1.requestAmountLTEcontractBalance(40813183705584189981829683726044902612952245489041374582859839671858653513958) Time delay: 302376 seconds Block delay: 45506
 ```
 
 Comment: 
 
 Echidna called its own echidnaRequestAmount() method requesting a large value to withdraw; the request has been approved because the original contract's check is missing and the value of the current request is hence greater than the contract tokens balance which is zero  (obviously this would also have failed even with a smaller value).
 
-### echidnaRequestTimeout
+### EchidnaTokenDistribution_2 for property 2: preventsNewRequestsBeforeTimeout
 
 Execute:
 
 ```bash
-solc-select use 0.8.25 && echidna --contract EchidnaRequestTimeout echidna/echidnaRequestTimeout/EchidnaRequestTimeout.sol --config echidna/echidna.config.yaml
+solc-select use 0.8.25 && echidna --contract EchidnaTokenDistribution_2 echidna/preventsNewRequestsBeforeTimeout/EchidnaTokenDistribution_2.sol --config echidna/echidna.config.yaml
 ```
 
 Original TokenDistribution contract:
@@ -113,23 +115,22 @@ else
 Output:
 
 ```
-assertion in echidnaRequestTimeout(uint256): FAILED! with ErrorRevert
-
-Call sequence:
-1. EchidnaRequestTimeout.request(147) Time delay: 24867 seconds Block delay: 3661
-2. EchidnaRequestTimeout.echidnaRequestTimeout(1) Time delay: 255 seconds Block delay: 18
+preventsNewRequestsBeforeTimeout(uint256): failed!💥
+  Call sequence:
+    EchidnaTokenDistribution_2.request(35) Time delay: 136392 seconds Block delay: 33357
+    EchidnaTokenDistribution_2.preventsNewRequestsBeforeTimeout(30) Time delay: 115085 seconds Block delay: 32
 ```
 
 Comment:
 
 Echidna performed a request and after 18 blocks (hence when the request was not expireed yet), performed a newer one that modified the request status. This mean a bad request has been accepted by the modified contract. 
 
-### echidnaValidatorsThreshold
+### EchidnaTokenDistribution_3 for property 3: numberOfValidatorsLTEthreshold
 
 Execute:
 
-```
-solc-select use 0.8.25 && echidna --contract EchidnaValidatorsThreshold echidna/echidnaValidatorsThreshold/EchidnaValidatorsThreshold.sol --config echidna/echidna.config.yaml
+```bash
+solc-select use 0.8.25 && echidna --contract EchidnaTokenDistribution_3 echidna/numberOfValidatorsLTEthreshold/EchidnaTokenDistribution_3.sol --config echidna/echidna.config.yaml
 ```
 
 Original TokenDistribution contract:
@@ -182,17 +183,16 @@ uint constant TIMEOUT = 1000;
 Output:
 
 ```
-assertion in echidnaValidatorsThreshold(): FAILED! with ErrorRevert
-
-Call sequence:
-1. EchidnaValidatorsThreshold.addValidator(0x60000) from: 0x0000000000000000000000000000000000010000 Time delay: 482712 seconds Block delay: 33357
-2. EchidnaValidatorsThreshold.addValidator(0x50000) from: 0x0000000000000000000000000000000000010000 Time delay: 274922 seconds Block delay: 27404
-3. EchidnaValidatorsThreshold.addValidator(0x10000) from: 0x0000000000000000000000000000000000010000 Time delay: 206186 seconds Block delay: 45504
-4. EchidnaValidatorsThreshold.request(67) from: 0x0000000000000000000000000000000000020000 Time delay: 400981 seconds Block delay: 15369
-5. EchidnaValidatorsThreshold.approve() from: 0x0000000000000000000000000000000000010000 Time delay: 376096 seconds Block delay: 2511
-6. EchidnaValidatorsThreshold.approve() from: 0x0000000000000000000000000000000000050000 Time delay: 254 seconds Block delay: 256
-7. EchidnaValidatorsThreshold.approve() from: 0x0000000000000000000000000000000000060000 Time delay: 31594 seconds Block delay: 561
-8. EchidnaValidatorsThreshold.echidnaValidatorsThreshold() from: 0x0000000000000000000000000000000000020000 Time delay: 316801 seconds Block delay: 32331
+numberOfValidatorsLTEthreshold(): failed!💥
+  Call sequence:
+    EchidnaTokenDistribution_3.addValidator(0x10000) from: 0x0000000000000000000000000000000000010000 Time delay: 67960 seconds Block delay: 66
+    EchidnaTokenDistribution_3.addValidator(0x60000) from: 0x0000000000000000000000000000000000010000 Time delay: 401699 seconds Block delay: 54155
+    EchidnaTokenDistribution_3.request(67) from: 0x0000000000000000000000000000000000020000 Time delay: 20098 seconds Block delay: 26267
+    EchidnaTokenDistribution_3.addValidator(0x50000) from: 0x0000000000000000000000000000000000010000 Time delay: 448552 seconds Block delay: 4770
+    EchidnaTokenDistribution_3.approve() from: 0x0000000000000000000000000000000000010000 Time delay: 463588 seconds Block delay: 8447
+    EchidnaTokenDistribution_3.approve() from: 0x0000000000000000000000000000000000050000 Time delay: 19029 seconds Block delay: 1
+    EchidnaTokenDistribution_3.approve() from: 0x0000000000000000000000000000000000060000 Time delay: 322308 seconds Block delay: 34
+    EchidnaTokenDistribution_3.numberOfValidatorsLTEthreshold() from: 0x0000000000000000000000000000000000040000 Time delay: 4177 seconds Block delay: 58783
 ```
 
 Comment:
