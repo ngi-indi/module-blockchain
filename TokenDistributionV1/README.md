@@ -105,9 +105,18 @@ Inside the instance, run these commands:
 
 ```bash
 cd hevm-test 
-export CODE=$(jq -r '.bytecode.object' out/TokenDistribution.sol/TokenDistribution.json)
+export CODE=$(jq -r '.bytecode.object' out/HevmTokenDistribution.sol/HevmTokenDistribution.json)
 ./hevm-x86_64-linux symbolic --code $CODE
 ```
+<!-- 
+arguments: 
+    --show-tree 
+
+bugged contracts: 
+    cd hevm-test 
+    export CODE=$(jq -r '.bytecode.object' out/HevmTokenDistributionBugged.sol/HevmTokenDistributionBugged.json)
+    ./hevm-x86_64-linux symbolic --code $CODE
+-->
 
 #### Docker instances management
 

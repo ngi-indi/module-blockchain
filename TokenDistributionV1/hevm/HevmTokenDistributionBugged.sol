@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.1; // current version at the time of writing: 0.8.25+commit.b61c2a91
 
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol"; 
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "./IndiToken.sol";
 
-contract TokenDistribution
+contract HevmTokenDistributionBugged
 {
-    // ---------------------------------------------------------
+  // ---------------------------------------------------------
     // Attributes
     // ---------------------------------------------------------
 
@@ -36,6 +37,11 @@ contract TokenDistribution
     event ValidatorAdded(address indexed validator);
     event ValidatorRemoved(address indexed validator);
 
+    // hevm:
+    IndiToken indiToken = new IndiToken();
+    uint constant VALIDATORS_THRESHOLD = 3;
+    uint constant TIMEOUT = 110;
+
     // ---------------------------------------------------------
     
 
@@ -52,7 +58,8 @@ contract TokenDistribution
         validatorsThreshold = _validatorsThreshold;
         timeout = _timeout;
 
-        currentRequest.approvalValidators = new address[](validatorsThreshold);
+        // (modified line)
+        currentRequest.approvalValidators = new address[](validatorsThreshold+1);
     }
 
     // ---------------------------------------------------------
@@ -92,8 +99,8 @@ contract TokenDistribution
         // In the very unfortunate case, a withdrawal request cannot be performed in the genesis block of a EVM chain because contract has to be created before that!
         if(block.number > currentRequest.blockNumber + timeout || currentRequest.blockNumber == 0)
         {
-            // Creates an empty request at the current block with the specified amount.
-            currentRequest = Request(_amount, block.number, new address[](validatorsThreshold));
+            // Creates an empty request at the current block with the specified amount (modified line).
+            currentRequest = Request(_amount, block.number, new address[](validatorsThreshold+1));
             
             emit NewWithdrawalRequest(currentRequest);
         } 
@@ -112,8 +119,6 @@ contract TokenDistribution
         {
             if(currentRequest.approvalValidators[i] == msg.sender) { revert("You have already approved this request!"); }
         }
-
-        require(getNumberOfValidatorsInCurrentRequest() < validatorsThreshold, "Number of approvals exceed!");
 
         currentRequest.approvalValidators[getNumberOfValidatorsInCurrentRequest()] = msg.sender;
 
@@ -143,8 +148,8 @@ contract TokenDistribution
     // ---------------------------------------------------------
 
     function getNumberOfValidatorsInCurrentRequest() public view returns (uint) { 
-        // if the value is not overridden by the for loop this means there are not free indeces i.e. the array is full and the number of approval is equal to the threshold
-        uint firstFreeIndex = validatorsThreshold;
+        // if the value is not overridden by the for loop this means there are not free indeces (modified line)
+        uint firstFreeIndex = currentRequest.approvalValidators.length;
         
         // Searches for the first free value in the addresses array (i.e. the default value) 
         for(uint i=0; i<currentRequest.approvalValidators.length; i++)
@@ -192,4 +197,18 @@ contract TokenDistribution
     }
 
     // ---------------------------------------------------------
+
+    // -----------------------------------------------------------
+    // Assertions
+    // -----------------------------------------------------------
+
+    function requestAmountLTEcontractBalance(uint _amount) public {
+        // Perform a request
+        request(_amount);
+
+        // A request should always be less than or equal to the contract's tokens balance.
+        assert(currentRequest.amount <= indiToken.balanceOf(address(this)));
+    }
+
+    // -----------------------------------------------------------
 }

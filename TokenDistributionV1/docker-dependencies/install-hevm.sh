@@ -31,6 +31,9 @@ mv ./contracts/IndiToken.sol ./hevm-test/src/IndiToken.sol
 mkdir ./hevm-test/\@openzeppelin
 mv ./node_modules/\@openzeppelin/contracts ./hevm-test/\@openzeppelin/contracts
 
+mv ./hevm/HevmTokenDistribution.sol ./hevm-test/src/HevmTokenDistribution.sol
+mv ./hevm/HevmTokenDistributionBugged.sol ./hevm-test/src/HevmTokenDistributionBugged.sol
+
 # Compile the contracts
 cd hevm-test
 forge build
