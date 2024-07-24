@@ -105,8 +105,8 @@ Inside the instance, run these commands:
 
 ```bash
 cd hevm-test 
-export CODE=$(jq -r '.bytecode.object' out/HevmTokenDistribution.sol/HevmTokenDistribution.json)
-./hevm-x86_64-linux symbolic --code $CODE
+export CODE=$(jq -r '.deployedBytecode.object' out/HevmTokenDistribution.sol/HevmTokenDistribution.json)
+./hevm-x86_64-linux symbolic --code $CODE -assertions '[0x01]'
 ```
 <!-- 
 arguments: 
@@ -115,7 +115,7 @@ arguments:
 bugged contracts: 
     cd hevm-test 
     export CODE=$(jq -r '.bytecode.object' out/HevmTokenDistributionBugged.sol/HevmTokenDistributionBugged.json)
-    ./hevm-x86_64-linux symbolic --code $CODE
+    ./hevm-x86_64-linux symbolic --code $CODE -assertions '[0x01]' --smt-timeout 10000
 -->
 
 #### Docker instances management
