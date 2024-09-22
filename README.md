@@ -1,52 +1,41 @@
-# module-blockchain (experimental)
+<div align="center">
+  <img src="./assets/logo.jpg" alt="Logo" width="150"/>
 
-## 📕 Table of Contents
+  # Blockchain Manager
 
-<details open>
-<summary></summary>
+  ![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
+  ![Version 0.1](https://img.shields.io/badge/version-0.1-green.svg)
+  ![Status: Stable](https://img.shields.io/badge/status-stable-brightgreen.svg)
+    
+  <p>
+     The <strong>Blockchain Manager</strong> provides a comprehensive framework for developing, testing, and deploying blockchain-based solutions. Built using tools like <strong>Hardhat</strong>, <strong>Echidna</strong>, and <strong>Docker</strong>, it enables efficient contract compilation, testing, and deployment on various blockchain networks. It supports smart contract development with advanced fuzz testing and security auditing tools, ensuring robust and secure blockchain applications. This module offers developers an integrated solution to manage blockchain projects with reusable templates, network configuration, and contract deployment automation.
+  </p>
 
-- [Projects list](#projects-list)
-- [Requirements](#requirements)
+</div>
 
-	<details open>
-	<summary><b>Development and testing</b></summary>
+## Table of Contents
 
-	- [Setup](#setup)
-	- [Create a new Hardhat project](#create-a-new-hardhat-project)
-	- [Hardhat commands](#hardhat-commands)
-		- [Compile the contracts ](#️compile-the-contracts)
-		- [Clear cache and compiled contracts files](#clear-cache-and-compiled-contracts-files)
-		- [Run the tests](#run-the-tests)
-		- [Deploy a contract](#deploy-a-contract)
-		- [Interact with a deployed contract](#interact-with-a-deployed-contract)
-	- [Echidna](#echidna)	
-	</details>
+- [Installation](#installation)
+  - [Prerequisites](#requirements)
+  - [Setup](#setup)
+- [Usage](#docker-commands)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
 
-	<details open>
-	<summary><b>Usage</b></summary>
 
-	- [Docker commands](#docker-commands)
-		- [Build all the instances](#️build-all-the-instances)
-		- [Build a specific instance](#build-a-specific-instance)
-		- [Clear the instances](#clear-the-instances)
-		- [Interact with an instance](#interact-with-an-instance)
-		- [Stop a running instance](#stop-a-running-instance)
-	</details>
-	
-</details>
+---
 
-## Projects list
+## Installation
 
-- [TokenDistribution V1](TokenDistributionV1)
-
-## Requirements
+### Requirements
 
 - Node.js
 - Hardhat
 - Docker
 - Echidna
 
-## Setup
+### Setup
 
 1. Clone the repository:
 
@@ -322,7 +311,7 @@ Some testing features such as before(), beforeAll(), etc. do not work outside th
 	solc-select use 0.8.25 && echidna --contract Echidna<ContractName> echidna/Echidna<ContractName>.sol --config echidna/echidna.config.yaml
 	```
 
-## Docker commands
+## Usage
 
 #### Build all the instances
 
@@ -379,3 +368,42 @@ sudo docker system prune
 ```bash
 sudo docker stop <CONTAINER ID>
 ```
+
+
+## Contributing
+
+### Reporting bugs and requesting features
+- If you find a bug, please open an issue.
+- To request a feature, feel free to open an issue as well.
+
+### Developing a new feature
+
+1. **Fork the repository** by clicking the "Fork" button at the top right of this page.
+2. **Clone your fork** locally:
+   ```bash
+   git clone https://github.com/ngi-indi/module-bias-manager.git
+   ```
+3. **Create a new branch** for your feature or bug fix:
+   ```bash
+   git checkout -b feature-branch
+   ```
+4. **Make your changes.** Please follow the existing code style and conventions.
+5. **Commit your changes** with a descriptive commit message:
+   ```bash
+   git commit -m "Add new feature: explanation of bias model predictions"
+   ```
+6. **Push to your fork**:
+   ```bash
+   git push origin feature-branch
+   ```
+7. **Open a pull request** from your fork’s branch to the main branch of this repository.
+- Describe the changes you’ve made in the PR description.
+- Ensure that your PR references any relevant issues.
+
+## License
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Contact
+For any questions or support, please reach out to:
+- Email: support@ngi-indi.com
+- Website: NGI Search INDI
