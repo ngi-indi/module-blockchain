@@ -8,7 +8,7 @@
   ![Status: Stable](https://img.shields.io/badge/status-stable-brightgreen.svg)
     
   <p>
-     The <strong>Blockchain Manager</strong> provides a comprehensive framework for developing, testing, and deploying blockchain-based solutions. Built using tools like <strong>Hardhat</strong>, <strong>Echidna</strong>, and <strong>Docker</strong>, it enables efficient contract compilation, testing, and deployment on various blockchain networks. It supports smart contract development with advanced fuzz testing and security auditing tools, ensuring robust and secure blockchain applications. This module offers developers an integrated solution to manage blockchain projects with reusable templates, network configuration, and contract deployment automation.
+     The <strong>Blockchain Manager</strong> provides a comprehensive framework for developing, testing, and deploying blockchain-based solutions. Built using tools like <strong>Hardhat</strong>, <strong>Echidna</strong>, and <strong>Docker</strong>, it enables efficient contract compilation, testing, and deployment on various blockchain networks. It supports smart contract development with advanced fuzz testing and security auditing tools, ensuring robust and secure blockchain applications. This module offers developers an integrated solution to manage blockchain projects with reusable templates, network configuration, and contract.
   </p>
 
 </div>
