@@ -18,7 +18,7 @@
 - [Installation](#installation)
   - [Prerequisites](#requirements)
   - [Setup](#setup)
-- [Usage](#docker-commands)
+- [Usage](#usage)
 - [Contributing](#contributing)
 - [License](#license)
 - [Contact](#contact)
