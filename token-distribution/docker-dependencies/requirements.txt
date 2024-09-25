@@ -1,3 +1,0 @@
-crytic-compile
-slither-analyzer
-solc-select

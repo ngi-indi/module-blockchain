@@ -1,54 +1,16 @@
 services:
-  owner:
-    build: .
-    tty: true
-    environment:
-      - PRIVATE_KEY=${PRIVATE_KEY_1}
-
-  recipient:
-    build: .
-    tty: true
-    environment:
-      - PRIVATE_KEY=${PRIVATE_KEY_2}
-
-  validator-1:
-    build: .
-    tty: true
-    environment:
-      - PRIVATE_KEY=${PRIVATE_KEY_3}
-
-  validator-2:
-    build: .
-    tty: true
-    environment:
-      - PRIVATE_KEY=${PRIVATE_KEY_4}
-
-  validator-3:
-    build: .
-    tty: true
-    environment:
-      - PRIVATE_KEY=${PRIVATE_KEY_5}
-
-  test-echidna:
+  server:
     build: 
-      context: .
-      dockerfile: Dockerfile
-      args:
-        - INSTALL_ECHIDNA=true
-        - INSTALL_PIP=true
+      context: ./server
     tty: true
-
-  test-hevm:
-    build: 
-      context: .
-      dockerfile: Dockerfile
-      args:
-        - INSTALL_HEVM=true
-    tty: true
-
-  test-hardhat:
-    build: .
-    tty: true
-    command: npm run test:hardhat
     environment:
-      - PRIVATE_KEY=${PRIVATE_KEY_1}
+      - PRIVATE_KEY=${PRIVATE_KEY_1} # TODO: manage different keys aka env variables (Docker allows only one variable per instance c:)
+    ports:
+      - "5000:5000"  # expose
+
+  client:
+    build:
+      context: ./client
+    tty: true
+    depends_on:
+      - server
