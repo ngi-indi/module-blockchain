@@ -1,9 +1,10 @@
-import { ITokenDistribution, IIndiToken } from "./scripts/interface.ts";
+import { ITokenDistribution, IIndiToken } from "./interface.ts";
 import { ethers } from "hardhat";
 
-const DEPLOYMENT_FILE_PATH = "/.deployment.json";
-
+import * as path from 'path';
 import express from 'express';
+
+const DEPLOYMENT_FILE_PATH = path.resolve(__dirname, '../deployment.json');
 
 const app = express();
 const port = 5000;
@@ -36,14 +37,15 @@ app.get('/check-contract', async (req, res) => {
         const currentRequestValidators = await tokenDistribution.getNumberOfValidatorsInCurrentRequest();
         const currentRequestBlock = await tokenDistribution.getBlockNumberInCurrentRequest();
 
+        console.log()
         res.json({
-          owener: owner,
+          owner: owner,
           recipient: recipient,
-          timeout: timeout,
-          validators_threshold: validatorsThreshold,
+          timeout: timeout.toString(),
+          validators_threshold: validatorsThreshold.toString(),
           token_address: tokenAddress,
-          current_request_validators: currentRequestValidators,
-          current_request_block: currentRequestBlock,
+          current_request_validators: currentRequestValidators.toString(),
+          current_request_block: currentRequestBlock.toString(),
         });
       } catch (error) {
         console.error("Error fetching token info:", error);

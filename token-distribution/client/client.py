@@ -2,7 +2,8 @@ import requests
 import time
 
 def check_status():
-    url = "http://server:5000/check-server"
+    action = "check-server"
+    url = "http://server:5000/" + action
     try:
         response = requests.get(url)
         if response.status_code == 200:
@@ -10,10 +11,11 @@ def check_status():
         else:
             print(f"Error: {response.status_code}, {response.text}")
     except requests.ConnectionError:
-        print("Failed to connect to server.")
+        print(action + ": Failed to connect to server.")
 
 def check_contract():
-    url = "http://server:5000/check-contract"
+    action = "check-contract"
+    url = "http://server:5000/" + action
     try:
         response = requests.get(url)
         if response.status_code == 200:
@@ -21,7 +23,7 @@ def check_contract():
         else:
             print(f"Error: {response.status_code}, {response.text}")
     except requests.ConnectionError:
-        print("Failed to connect to server.")
+        print(action + ": Failed to connect to server.")
 
 if __name__ == "__main__":
     time.sleep(10) # wait for the server to be ready (did this since I'm launching the instances from a single CLI command)
