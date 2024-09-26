@@ -90,9 +90,9 @@ app.get('/deploy', async (req, res) => {
 		deploymentJSON['contractAddress'] = tokenDistribution.target;
 
 		// Update the old properties with the params oness
-		deploymentJSON['validatorsThreshold'] = validatorsThreshold;
-		deploymentJSON['timeout'] = timeout;
-		deploymentJSON['recipientAddress'] = recipientAddress;
+		deploymentJSON['validatorsThreshold'] = validatorsThreshold.toString();
+		deploymentJSON['timeout'] = timeout.toString();
+		deploymentJSON['recipientAddress'] = recipientAddress.toString();
 
 		// Overwrite the JSON file
 		fs.writeFileSync(DEPLOYMENT_FILE_PATH, JSON.stringify(deploymentJSON, null, '\t'));
@@ -102,6 +102,7 @@ app.get('/deploy', async (req, res) => {
 
 		res.json({ 
 			status: 'Success',
+			message: 'Contract sucessfully deployed on the network.',
 			contractAddress: tokenDistribution.target
 		});		
 	} catch (error) {
