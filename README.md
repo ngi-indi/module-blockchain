@@ -27,7 +27,7 @@
 
 ### Requirements
 
-- Docker
+Before starting, ensure you have Docker and Git installed on your system.
 
 ### Setup
 
