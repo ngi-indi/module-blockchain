@@ -8,7 +8,7 @@
   ![Status: Stable](https://img.shields.io/badge/status-stable-brightgreen.svg)
     
   <p>
-     This branch proposes a <strong>client-server</strong> architecture for integrating the <strong>Blockchain Manager</strong> component to other modules.
+     This branch proposes a <strong>client-server</strong> architecture for integrating the <strong>Blockchain Manager</strong> component to other modules, with the aim of supporting crypto-asset rewards for human reviewers.
   </p>
 
 </div>
@@ -23,9 +23,6 @@
 - [License](#license)
 - [Contact](#contact)
 
-
----
-
 ## Installation
 
 ### Requirements
@@ -34,13 +31,13 @@
 
 ### Setup
 
-1. Clone this repository.
+1. **Clone this repository**.
 
 	```bash
 	git clone --branch integration https://github.com/ngi-indi/module-blockchain.git
 	```
 
-2. Create the ```server/secrets.json``` file.
+2. **Create the ```server/secrets.json``` file**.
 
 	```json
 	{
@@ -49,7 +46,7 @@
 	}
 	```
 
-2. Create the ```.env``` file similar to the following one.
+2. **Create the ```.env``` file similar to the following one**.
 
 	```
 	# Passphrases:
@@ -74,12 +71,12 @@
 	-->
 
 ## Usage
-
-1. Run the server and client Docker containers.
+Run the server and client Docker containers.
 
 	```bash
 	docker-compose up --build
 	```
+
 
 ## Contributing
 
@@ -112,9 +109,10 @@
 - Ensure that your PR references any relevant issues.
 
 ## License
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the GNU General Public License v3.0 License - see the [LICENSE](https://github.com/ngi-indi/module-blockchain/blob/main/LICENSE) file for details.
 
 ## Contact
 For any questions or support, please reach out to:
-- Email: support@ngi-indi.com
-- Website: NGI Search INDI
+- University of Cagliari: bart@unica.it, diego.reforgiato@unica.it, ludovico.boratto@unica.it, mirko.marras@unica.it
+- R2M Solution: giuseppe.scarpi@r2msolution.com
+- Website: Coming soon!
