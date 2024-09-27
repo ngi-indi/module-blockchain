@@ -1,0 +1,16 @@
+services:
+  server:
+    build: 
+      context: ./server
+    tty: true
+    environment:
+      - PRIVATE_KEY=${PRIVATE_KEY_1} # TODO: manage different keys aka env variables (Docker allows only one variable per instance c:)
+    ports:
+      - "5000:5000"  # expose
+
+  client:
+    build:
+      context: ./client
+    tty: true
+    depends_on:
+      - server

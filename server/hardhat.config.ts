@@ -4,7 +4,7 @@ import "@nomicfoundation/hardhat-toolbox";
 import hre from "hardhat";  // hre = Hardhat Runtime Environment
 import {ethers} from "hardhat"; 
 
-import {bscscanApiKey} from './secrets.json';
+import {bscscanApiKey, bscPrivateKey} from './secrets.json';
 
 const config: HardhatUserConfig  = {
 	solidity: "0.8.25",
@@ -13,7 +13,7 @@ const config: HardhatUserConfig  = {
 			url: "https://bsc-testnet-dataseed.bnbchain.org",
 			chainId: 97,
 			gasPrice: 20000000000,
-			accounts: {mnemonic: process.env.PRIVATE_KEY},
+			accounts: {mnemonic: bscPrivateKey},
 		},
 	},
 	etherscan: {
