@@ -73,9 +73,7 @@ Before starting, ensure you have Docker and Git installed on your system.
 ## Usage
 Run the server and client Docker containers.
 
-	```bash
 	docker-compose up --build
-	```
 
 
 ## Contributing
